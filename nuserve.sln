@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nuserve", "src\nuserve\nuse
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nuserve.tests", "test\nuserve.tests\nuserve.tests.csproj", "{6AA8E365-DF52-4E8D-ADBA-3F62E2B2FDA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "client", "client\client.csproj", "{0A0B1D2C-0073-4DBE-9408-B4055DD2499A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -26,6 +28,10 @@ Global
 		{6AA8E365-DF52-4E8D-ADBA-3F62E2B2FDA8}.Debug|x86.Build.0 = Debug|x86
 		{6AA8E365-DF52-4E8D-ADBA-3F62E2B2FDA8}.Release|x86.ActiveCfg = Release|x86
 		{6AA8E365-DF52-4E8D-ADBA-3F62E2B2FDA8}.Release|x86.Build.0 = Release|x86
+		{0A0B1D2C-0073-4DBE-9408-B4055DD2499A}.Debug|x86.ActiveCfg = Debug|x86
+		{0A0B1D2C-0073-4DBE-9408-B4055DD2499A}.Debug|x86.Build.0 = Debug|x86
+		{0A0B1D2C-0073-4DBE-9408-B4055DD2499A}.Release|x86.ActiveCfg = Release|x86
+		{0A0B1D2C-0073-4DBE-9408-B4055DD2499A}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
