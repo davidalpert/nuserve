@@ -1,0 +1,220 @@
+require 'rubygems'    
+require 'bundler'
+
+system "bundle install --system"
+
+require 'albacore'
+require 'rake/clean'
+require 'xmlsimple' # might use this later - to manipulate config files?
+
+include FileUtils
+
+# include our custom albacore tasks (if any)
+FileList["./Tools/albacore/**/*.rb"].each { |f| require f }
+
+source_root = "./src"
+test_root = "./test"
+lib_root = "./packages"
+package_root = "./packages"
+tools_root = "./tools"
+
+build_root = "./build" # used as a pre-deployment staging folder
+
+solution_file = FileList["./**/*.sln"].first
+commit = Git.open(".").log.first.sha[0..10] rescue 'na'
+version = "0.0.1"
+msbuild_exe = File.join(ENV['windir'], 'Microsoft.NET','Framework',  'v4.0.30319', 'MSBuild.exe')
+
+CLEAN.include("#{source_root}/**/bin", "#{source_root}/**/obj", "#{test_root}/**/obj", "#{test_root}/**/bin")
+
+CLOBBER.include("./**/_*", "./**/*.user", "./**/*.cache", "./**/*.suo", "TestResult.xml", "#{package_root}")
+
+# ---------------------------------------------------------------------------------------------------------
+# and so begin the build script tasks/targets
+
+desc 'Default: clean and (re)build the solution'
+task :default => ["clean", "build:all"]
+
+# ---------------------------------------------
+
+desc 'Setup requirements to build and deploy'
+task :setup => ["setup:dep"]
+
+namespace :setup do
+
+	task :dep => ["setup:dep:gems", "setup:dep:packages", "setup:dep:os"]
+
+	namespace :dep do
+
+		desc "Download and install gems from the Gemfile"
+		task :gems do
+			system "bundle install --system"
+		end
+
+		desc "Setup dependencies for nuget packages"
+		task :packages do
+			FileList["**/packages.config"].each do |file|
+				sh "nuget install #{file} /OutputDirectory #{package_root}"
+			end
+		end
+	
+		desc "Setup dependencies for this OS (x86/x64)"
+		task :os do
+			folders = []
+			`find #{lib_root} -name 'binaries'`.each_line {|f| folders.push f.strip}
+			setup_os(nil,folders) 
+		end
+	end
+end
+
+desc "Build the project"
+task :build => ["build:all"]
+
+namespace :build do
+
+	msbuild :all, [:config] => [:setup] do |msb, args|
+		configuration = :Debug
+
+		if args[:config] != nil && args[:config] != 'local' then
+			configuration = args[:config]
+		end
+
+		msb.properties :configuration => configuration
+		msb.targets :Clean, :Build
+		msb.solution = solution_file
+	end
+
+	desc "Rebuild the project"
+	task :re => ["clean", "build:all"]
+
+end
+
+desc "Run unit tests"
+task :test => ["clean", "build:all", "test:unit", "test:integration"]
+
+desc "Run integration tests"
+task :integration => ["clean", "build:all", "test:integration"]
+
+desc "Run acceptance tests (scripted features)"
+task :features, [:tag] do |t, args|
+	Rake::Task["test:features"].invoke(args.tag)
+end  
+
+namespace :test do
+	addin = ENV['teamcity.dotnet.nunitaddin']
+	addin = "#{addin}-2.5.5.dll" if addin
+	
+	desc 'Run all tests (unit & acceptance)'
+	task :all, [:config] do |t, args|
+		Rake::Task["test:unit"].invoke(args[:config])
+		Rake::Task["test:integration"].invoke(args[:config])
+		Rake::Task["build:views"].invoke()
+		Rake::Task["test:features"].invoke()
+	end
+
+	desc 'Run unit tests'
+	nunit :unit, [:config] do |nunit, args|
+		Rake::Task["build:all"].invoke(args[:config])
+		
+		configuration = :Debug
+		if args[:config] != nil && args[:config] != 'local' then
+			configuration = args[:config]
+		end
+
+		puts "******* Then env teamcity.dotnet.nunitlauncher #{ENV['teamcity.dotnet.nunitlauncher']}"
+		puts "******* Then env teamcity.dotnet.nunitaddin #{ENV['teamcity.dotnet.nunitaddin']}"
+		FileUtils.copy(addin, "./tools/NUnit/addins") if addin	
+		nunit.command = "./tools/NUnit/nunit-console.exe"
+		assemblies = "#{test_root}/**/bin/#{configuration}/*.Tests.dll"
+		puts "looking for #{assemblies}"
+		nunit.assemblies = FileList[assemblies]
+	end
+
+	desc 'Run integration tests'
+	nunit :integration, [:config] do |nunit, args|
+		Rake::Task["build:all"].invoke(args[:config])
+
+		configuration = :Debug
+		if args[:config] != nil && args[:config] != 'local' then
+			configuration = args[:config]
+		end
+
+		puts "******* Then env teamcity.dotnet.nunitlauncher #{ENV['teamcity.dotnet.nunitlauncher']}"
+		puts "******* Then env teamcity.dotnet.nunitaddin #{ENV['teamcity.dotnet.nunitaddin']}"
+		FileUtils.copy(addin, "./tools/NUnit/addins") if addin	
+		nunit.command = "./tools/NUnit/nunit-console-x86.exe"
+		assemblies = "#{test_root}/**/bin/#{configuration}/*.Integration.dll"
+		puts "looking for #{assemblies}"
+		nunit.options '/noshadow'
+		nunit.assemblies = FileList[assemblies]
+	end
+end
+
+namespace :util do
+
+	task :signals do
+		Signal.list.each do |s|
+			puts s
+		end
+	end
+
+	task :rm_orig do
+		FileList["./**/*.orig"].each { |f| rm f }
+	end
+end
+
+def put_banner(text)
+	puts
+	puts "-------------------------------------------------------------"
+	puts text
+	puts "-------------------------------------------------------------"
+	puts
+end
+
+def resolve_profile(profileName)
+	profile = $deployment_profiles["#{profileName}"]
+
+	if profile.nil? then
+		puts
+		puts "don't recognize profile '#{profileName}'; using 'local'"
+		puts
+		profileName = 'local'
+		profile = $deployment_profiles["#{profileName}"]
+	end
+	
+	profile.merge!( :name => profileName )
+
+	return profile
+end
+
+def svn_version
+    version_range = `./tools/svn/svnversion`.match('(\d+)(?::(\d+))?') rescue [-1]
+    version_range[2] || version_range[1] || ENV["BUILD_VCS_NUMBER"]
+end
+
+def windows_path_for(bash_path)
+  "#{bash_path}".gsub('/', '\\')
+end
+
+def windows_path_with_trailing_slash_for(bash_path)
+  "#{bash_path}//".gsub('/', '\\')
+end
+
+def tool(package, tool)
+  File.join(Dir.glob(File.join(package_root,"#{package}.*")).sort.last, "tools", tool)
+end
+
+def setup_os(target = nil, folders_to_setup = nil)
+	target ||= File.exist?('c:\Program Files (x86)') ? 64 : 32
+	abort "no folders to set up!" if folders_to_setup.nil?
+	puts "**** Setting up OS #{target} bits"
+	folders_to_setup.each { |folder_path| 
+		pattern = "#{folder_path}/{x,}#{target}/*.*"
+		#puts "**** looking in: #{pattern}"
+		files = FileList["#{pattern}"].each { |f|
+			puts "**** Using #{f}"
+			FileUtils.cp(f, folder_path)
+		}
+	}
+end
+
