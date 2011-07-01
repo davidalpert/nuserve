@@ -8,6 +8,10 @@ using System.Net;
 using System.Diagnostics;
 using Nancy.Hosting.Self;
 using Nancy;
+using System.Timers;
+using Topshelf.Internal;
+using log4net.Config;
+using System.IO;
 
 namespace nuserve
 {
@@ -15,11 +19,14 @@ namespace nuserve
     {
         static void Main(string[] args)
         {
-            var cfg = RunnerConfigurator.New(x =>
+            XmlConfigurator.ConfigureAndWatch(
+                    new FileInfo(".\\log4net.config"));
+
+            Topshelf.HostFactory.Run(x =>
             {
                 x.Service<NuGetPackageServer>(s =>
                 {
-                    s.SetServiceName("nuserve");
+                    //s.SetServiceName("nuserve");
                     s.ConstructUsing(name => new NuGetPackageServer());
                     s.WhenStarted(ns => ns.Start());
                     s.WhenPaused(ns => ns.Pause());
@@ -28,10 +35,24 @@ namespace nuserve
                 });
 
                 x.RunAsLocalSystem();
-            });
 
-            Runner.Host(cfg, args);
+                x.SetDisplayName("nuserve.exe");
+                x.SetDescription("a lightweight nuget server that can run as a windows service with no dependency on IIS");
+                x.SetServiceName("nuserve");
+            });
         }
+    }
+
+    public class TownCrier
+    {
+        readonly Timer _timer;
+        public TownCrier()
+        {
+            _timer = new Timer(1000) { AutoReset = true };
+            _timer.Elapsed += (sender, eventArgs) => Console.WriteLine("It is {0} an all is well", DateTime.Now);
+        }
+        public void Start() { _timer.Start(); }
+        public void Stop() { _timer.Stop(); }
     }
 
     public class TestModule : NancyModule
