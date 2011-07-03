@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
 using log4net.Config;
 using Topshelf;
+using StructureMap;
+using FubuCore.Binding;
 
 namespace nuserve
 {
@@ -9,6 +12,9 @@ namespace nuserve
     {
         static void Main(string[] args)
         {
+            IoC.Bootstrap();
+
+
             XmlConfigurator.ConfigureAndWatch(
                     new FileInfo(".\\log4net.config"));
 
@@ -17,7 +23,7 @@ namespace nuserve
                 x.Service<NuGetPackageServer>(s =>
                 {
                     //s.SetServiceName("nuserve");
-                    s.ConstructUsing(name => new NuGetPackageServer());
+                    s.ConstructUsing(name => IoC.Get<NuGetPackageServer>());
                     s.WhenStarted(ns => ns.Start());
                     s.WhenPaused(ns => ns.Pause());
                     s.WhenContinued(ns => ns.Continue());

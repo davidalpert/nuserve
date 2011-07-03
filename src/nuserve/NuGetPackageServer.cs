@@ -1,34 +1,46 @@
 using System;
 using Nancy.Hosting.Self;
+using nuserve.Settings;
+using log4net;
 
 namespace nuserve
 {
     public class NuGetPackageServer
     {
+        EndpointSettings settings;
+
+        private ILog log = null;
+
         private NancyHost host = null;
+
+        /// <summary>
+        /// Initializes a new instance of the NuGetPackageServer class.
+        /// </summary>
+        /// <param name="settings"></param>
+        public NuGetPackageServer(EndpointSettings settings, ILog log)
+        {
+            this.log = log;
+            this.settings = settings;
+        }
 
         public void Start()
         {
-            var port = 5555;
-            var uri = new UriBuilder("http", "localhost", port).Uri;
+            var uri = new UriBuilder(settings.Protocol, settings.HostName, settings.Port).Uri;
 
             ensure_host_is_stopped();
 
             host = new NancyHost(uri);
             host.Start();
 
-            Console.WriteLine("Nancy now listening at: {0}", uri);
-            //Console.WriteLine("Press enter to stop");
-            //Console.ReadKey();
-
-            Console.WriteLine("nuserve started.");
+            log.InfoFormat("Nancy now listening at: {0}", uri);
+            log.Info("nuserve started.");
         }
 
         public void Stop()
         {
             ensure_host_is_stopped();
 
-            Console.WriteLine("nuserve stopped.");
+            log.Info("nuserve stopped.");
         }
 
         private void ensure_host_is_stopped()
@@ -42,12 +54,12 @@ namespace nuserve
 
         public void Pause()
         {
-            Console.WriteLine("nuserve paused.");
+            log.Info("nuserve paused.");
         }
 
         public void Continue()
         {
-            Console.WriteLine("nuserve resumed.");
+            log.Info("nuserve resumed.");
         }
     }
 }
