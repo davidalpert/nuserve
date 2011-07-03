@@ -25,6 +25,14 @@ commit = Git.open(".").log.first.sha[0..10] rescue 'na'
 version = "0.0.1"
 msbuild_exe = File.join(ENV['windir'], 'Microsoft.NET','Framework',  'v4.0.30319', 'MSBuild.exe')
 
+Albacore.configure do |config|
+	def package_tool(package, tool)
+		File.join(Dir.glob(File.join("./packages","#{package}.*")).sort.last, "tools", tool)
+	end
+
+	config.mspec.command = package_tool("Machine.Specifications", "mspec-clr4.exe")
+end
+
 CLEAN.include("#{source_root}/**/bin", "#{source_root}/**/obj", "#{test_root}/**/obj", "#{test_root}/**/bin")
 
 CLOBBER.include("./**/_*", "./**/*.user", "./**/*.cache", "./**/*.suo", "TestResult.xml", "#{package_root}")
@@ -33,7 +41,7 @@ CLOBBER.include("./**/_*", "./**/*.user", "./**/*.cache", "./**/*.suo", "TestRes
 # and so begin the build script tasks/targets
 
 desc 'Default: clean and (re)build the solution'
-task :default => ["clean", "build:all"]
+task :default => ["clean", "build:all", "integration"]
 
 # ---------------------------------------------
 
@@ -90,7 +98,7 @@ namespace :build do
 end
 
 desc "Run unit tests"
-task :test => ["clean", "build:all", "test:unit", "test:integration"]
+task :test => ["clean", "build:all", "test:integration"]
 
 desc "Run integration tests"
 task :integration => ["clean", "build:all", "test:integration"]
@@ -130,23 +138,9 @@ namespace :test do
 		nunit.assemblies = FileList[assemblies]
 	end
 
-	desc 'Run integration tests'
-	nunit :integration, [:config] do |nunit, args|
-		Rake::Task["build:all"].invoke(args[:config])
-
-		configuration = :Debug
-		if args[:config] != nil && args[:config] != 'local' then
-			configuration = args[:config]
-		end
-
-		puts "******* Then env teamcity.dotnet.nunitlauncher #{ENV['teamcity.dotnet.nunitlauncher']}"
-		puts "******* Then env teamcity.dotnet.nunitaddin #{ENV['teamcity.dotnet.nunitaddin']}"
-		FileUtils.copy(addin, "./tools/NUnit/addins") if addin	
-		nunit.command = "./tools/NUnit/nunit-console-x86.exe"
-		assemblies = "#{test_root}/**/bin/#{configuration}/*.Integration.dll"
-		puts "looking for #{assemblies}"
-		nunit.options '/noshadow'
-		nunit.assemblies = FileList[assemblies]
+	desc 'Run integration specs'
+	mspec :integration do |mspec|
+		mspec.assemblies FileList["#{test_root}/**/bin/**/*.Integration.Specs.dll"]
 	end
 end
 
@@ -200,10 +194,6 @@ def windows_path_with_trailing_slash_for(bash_path)
   "#{bash_path}//".gsub('/', '\\')
 end
 
-def tool(package, tool)
-  File.join(Dir.glob(File.join(package_root,"#{package}.*")).sort.last, "tools", tool)
-end
-
 def setup_os(target = nil, folders_to_setup = nil)
 	target ||= File.exist?('c:\Program Files (x86)') ? 64 : 32
 	abort "no folders to set up!" if folders_to_setup.nil?
@@ -217,4 +207,5 @@ def setup_os(target = nil, folders_to_setup = nil)
 		}
 	}
 end
+
 

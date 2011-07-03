@@ -14,16 +14,15 @@ namespace nuserve
         {
             IoC.Bootstrap();
 
-
             XmlConfigurator.ConfigureAndWatch(
                     new FileInfo(".\\log4net.config"));
 
             Topshelf.HostFactory.Run(x =>
             {
-                x.Service<NuGetPackageServer>(s =>
+                x.Service<NancyPackageServer>(s =>
                 {
                     //s.SetServiceName("nuserve");
-                    s.ConstructUsing(name => IoC.Get<NuGetPackageServer>());
+                    s.ConstructUsing(name => IoC.Get<NancyPackageServer>());
                     s.WhenStarted(ns => ns.Start());
                     s.WhenPaused(ns => ns.Pause());
                     s.WhenContinued(ns => ns.Continue());

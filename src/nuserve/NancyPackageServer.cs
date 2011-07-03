@@ -5,7 +5,18 @@ using log4net;
 
 namespace nuserve
 {
-    public class NuGetPackageServer
+    public interface InProcessPackageServer
+    {
+        void Start();
+        void Stop();
+        void Pause();
+        void Continue();
+
+        bool IsListening { get; }
+        Uri EndpointUri { get; }
+    }
+
+    public class NancyPackageServer : InProcessPackageServer
     {
         EndpointSettings settings;
 
@@ -17,7 +28,7 @@ namespace nuserve
         /// Initializes a new instance of the NuGetPackageServer class.
         /// </summary>
         /// <param name="settings"></param>
-        public NuGetPackageServer(EndpointSettings settings, ILog log)
+        public NancyPackageServer(EndpointSettings settings, ILog log)
         {
             this.log = log;
             this.settings = settings;
@@ -31,6 +42,9 @@ namespace nuserve
 
             host = new NancyHost(uri);
             host.Start();
+
+            IsListening = true;
+            EndpointUri = uri;
 
             log.InfoFormat("Nancy now listening at: {0}", uri);
             log.Info("nuserve started.");
@@ -48,18 +62,30 @@ namespace nuserve
             if (host != null)
             {
                 host.Stop();
+                IsListening = false;
+                EndpointUri = null;
                 host = null;
             }
         }
 
         public void Pause()
         {
+            host.Stop();
+            IsListening = false;
+
             log.Info("nuserve paused.");
         }
 
         public void Continue()
         {
+            host.Start();
+            IsListening = true;
+
             log.Info("nuserve resumed.");
         }
+
+        public bool IsListening { get; private set; }
+
+        public Uri EndpointUri { get; private set; }
     }
 }
