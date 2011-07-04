@@ -3,7 +3,6 @@ using System.Linq;
 using System.IO;
 using log4net.Config;
 using Topshelf;
-using FubuCore.Binding;
 using System.ServiceModel;
 using NuGet.Server;
 using NuGet.Server.DataServices;
