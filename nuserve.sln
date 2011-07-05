@@ -14,10 +14,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "client", "client\client.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nuserve.integration.specs", "test\nuserve.integration.specs\nuserve.integration.specs.csproj", "{6AA8E365-DF52-4E8D-ADBA-3F62E2B2FDA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "..\nuget.hg\src\Server\Server.csproj", "{793B20A9-E263-4B54-BB31-305B602087CE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "..\nuget.hg\src\Core\Core.csproj", "{F879F274-EFA0-4157-8404-33A19B4E6AEC}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Coverage|Any CPU = Coverage|Any CPU
@@ -94,42 +90,6 @@ Global
 		{6AA8E365-DF52-4E8D-ADBA-3F62E2B2FDA8}.stage|Any CPU.ActiveCfg = Release|Any CPU
 		{6AA8E365-DF52-4E8D-ADBA-3F62E2B2FDA8}.stage|Any CPU.Build.0 = Release|Any CPU
 		{6AA8E365-DF52-4E8D-ADBA-3F62E2B2FDA8}.stage|x86.ActiveCfg = Release|Any CPU
-		{793B20A9-E263-4B54-BB31-305B602087CE}.Coverage|Any CPU.ActiveCfg = Coverage|Any CPU
-		{793B20A9-E263-4B54-BB31-305B602087CE}.Coverage|Any CPU.Build.0 = Coverage|Any CPU
-		{793B20A9-E263-4B54-BB31-305B602087CE}.Coverage|x86.ActiveCfg = Coverage|Any CPU
-		{793B20A9-E263-4B54-BB31-305B602087CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{793B20A9-E263-4B54-BB31-305B602087CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{793B20A9-E263-4B54-BB31-305B602087CE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{793B20A9-E263-4B54-BB31-305B602087CE}.dev|Any CPU.ActiveCfg = Debug|Any CPU
-		{793B20A9-E263-4B54-BB31-305B602087CE}.dev|Any CPU.Build.0 = Debug|Any CPU
-		{793B20A9-E263-4B54-BB31-305B602087CE}.dev|x86.ActiveCfg = Debug|Any CPU
-		{793B20A9-E263-4B54-BB31-305B602087CE}.prod|Any CPU.ActiveCfg = Coverage|Any CPU
-		{793B20A9-E263-4B54-BB31-305B602087CE}.prod|Any CPU.Build.0 = Coverage|Any CPU
-		{793B20A9-E263-4B54-BB31-305B602087CE}.prod|x86.ActiveCfg = Coverage|Any CPU
-		{793B20A9-E263-4B54-BB31-305B602087CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{793B20A9-E263-4B54-BB31-305B602087CE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{793B20A9-E263-4B54-BB31-305B602087CE}.Release|x86.ActiveCfg = Release|Any CPU
-		{793B20A9-E263-4B54-BB31-305B602087CE}.stage|Any CPU.ActiveCfg = Coverage|Any CPU
-		{793B20A9-E263-4B54-BB31-305B602087CE}.stage|Any CPU.Build.0 = Coverage|Any CPU
-		{793B20A9-E263-4B54-BB31-305B602087CE}.stage|x86.ActiveCfg = Coverage|Any CPU
-		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.Coverage|Any CPU.ActiveCfg = Coverage|Any CPU
-		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.Coverage|Any CPU.Build.0 = Coverage|Any CPU
-		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.Coverage|x86.ActiveCfg = Coverage|Any CPU
-		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.dev|Any CPU.ActiveCfg = Debug|Any CPU
-		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.dev|Any CPU.Build.0 = Debug|Any CPU
-		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.dev|x86.ActiveCfg = Debug|Any CPU
-		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.prod|Any CPU.ActiveCfg = Coverage|Any CPU
-		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.prod|Any CPU.Build.0 = Coverage|Any CPU
-		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.prod|x86.ActiveCfg = Coverage|Any CPU
-		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.Release|x86.ActiveCfg = Release|Any CPU
-		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.stage|Any CPU.ActiveCfg = Coverage|Any CPU
-		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.stage|Any CPU.Build.0 = Coverage|Any CPU
-		{F879F274-EFA0-4157-8404-33A19B4E6AEC}.stage|x86.ActiveCfg = Coverage|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
