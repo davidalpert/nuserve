@@ -10,6 +10,8 @@ using System.Data.Services;
 using System.ServiceProcess;
 using System.ServiceModel.Web;
 using System.ServiceModel.Description;
+using NuGet.Server.Infrastructure;
+using System.Reflection;
 
 namespace nuserve
 {
@@ -29,6 +31,11 @@ namespace nuserve
 
             Uri[] uriArray = { uri };
             Type serviceType = typeof(Packages);
+
+            var exeRoot = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            PackageUtility.PackagePhysicalPath = Path.Combine(exeRoot, "Packages");
+            PackageUtility.ResolveAppRelativePathStrategy = s => Path.Combine(exeRoot, Path.Combine("Packages", s.TrimStart('~', '/')));
 
             serviceHost = new DataServiceHost(serviceType, uriArray);
 
