@@ -10,7 +10,7 @@ using nuserve.Settings;
 
 namespace nuserve
 {
-    public class SelfHostingPackageServer : ISelfHostingPackageServer
+    public class SelfHostingPackageServer : ISelfHostingPackageServer, IDisposable
     {
         private DataServiceHost serviceHost;
         private NancyHost host = null;
@@ -73,6 +73,11 @@ namespace nuserve
         public void Continue()
         {
             host.Start();
+        }
+
+        public void Dispose()
+        {
+            Stop();
         }
 
         private static void configure_PackageUtility_to_serve_packages_from_our_apps_local_packages_folder()
@@ -143,6 +148,5 @@ namespace nuserve
                 log.Info("Nancy stopped.");
             }
         }
-
     }
 }

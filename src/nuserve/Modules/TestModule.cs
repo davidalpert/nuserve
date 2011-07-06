@@ -1,35 +1,24 @@
 using System;
-using System.Linq;
+using System.IO;
 using Nancy;
 using NuGet;
+using nuserve.Infrastructure;
 using nuserve.Settings;
-using System.IO;
 
 namespace nuserve
 {
-    public interface IPackageAuthenticationService
-    {
-    }
-
-    public class PackageAuthenticationService : IPackageAuthenticationService
-    {
-    }
-
     public class TestModule : NancyModule
     {
-        IPackageAuthenticationService authService;
-        ApiSettings settings;
+        IAuthorizePackageOperations authService;
 
         /// <summary>
         /// Initializes a new instance of the TestModule class.
         /// </summary>
         /// <param name="authService"></param>
         /// <param name="settings"></param>
-        //public TestModule(IPackageAuthenticationService authService, ApiSettings settings)
-        public TestModule(ApiSettings settings)
+        public TestModule(IAuthorizePackageOperations authService)
         {
-            //this.authService = authService;
-            this.settings = settings;
+            this.authService = authService;
 
             DefineHandlers();
         }
@@ -59,7 +48,7 @@ namespace nuserve
 
         private Nancy.Response Authenticate(string apiKey, string id, Func<Nancy.Response> authenticatedContinuation)
         {
-            bool isAuthenticated = false;
+            bool isAuthenticated = authService.ClientCanPublishPackage(apiKey, id);
 
             if (isAuthenticated)
                 return authenticatedContinuation();
