@@ -1,12 +1,12 @@
 using System;
-using Nancy.Hosting.Self;
-using nuserve.Settings;
-using log4net;
-using NuGet.Server.Infrastructure;
+using System.Data.Services;
 using System.IO;
 using System.Reflection;
+using log4net;
+using Nancy.Hosting.Self;
 using NuGet.Server.DataServices;
-using System.Data.Services;
+using NuGet.Server.Infrastructure;
+using nuserve.Settings;
 
 namespace nuserve
 {
@@ -26,6 +26,53 @@ namespace nuserve
         {
             this.settings = settings;
             this.log = log;
+        }
+
+        public Uri EndpointUri { get; private set; }
+
+        public bool IsListening
+        {
+            get
+            {
+                bool nancyHostIsAlive = host != null;
+                bool serviceHostIsAlive = serviceHost != null;
+
+                return nancyHostIsAlive && serviceHostIsAlive;
+            }
+        }
+
+        public void Start()
+        {
+            configure_PackageUtility_to_serve_packages_from_our_apps_local_packages_folder();
+
+            EndpointUri = settings.GetEndpointUri();
+
+            start_OData_package_service(EndpointUri);
+
+            start_Nancy_server_to_handle_non_OData_routes(EndpointUri);
+
+            log.Info("nuserve started.");
+
+            EndpointUri = EndpointUri;
+        }
+
+        public void Stop()
+        {
+            stop_OData_package_service();
+
+            stop_Nancy_server();
+
+            log.Info("nuserve is stopped.");
+        }
+
+        public void Pause()
+        {
+            host.Stop();
+        }
+
+        public void Continue()
+        {
+            host.Start();
         }
 
         private static void configure_PackageUtility_to_serve_packages_from_our_apps_local_packages_folder()
@@ -97,51 +144,5 @@ namespace nuserve
             }
         }
 
-        public void Start()
-        {
-            configure_PackageUtility_to_serve_packages_from_our_apps_local_packages_folder();
-
-            EndpointUri = settings.GetEndpointUri();
-
-            start_OData_package_service(EndpointUri);
-
-            start_Nancy_server_to_handle_non_OData_routes(EndpointUri);
-
-            log.Info("nuserve started.");
-
-            EndpointUri = EndpointUri;
-        }
-
-        public void Stop()
-        {
-            stop_OData_package_service();
-
-            stop_Nancy_server();
-
-            log.Info("nuserve is stopped.");
-        }
-
-        public void Pause()
-        {
-            host.Stop();
-        }
-
-        public void Continue()
-        {
-            host.Start();
-        }
-
-        public bool IsListening
-        {
-            get
-            {
-                bool nancyHostIsAlive = host != null;
-                bool serviceHostIsAlive = serviceHost != null;
-
-                return nancyHostIsAlive && serviceHostIsAlive;
-            }
-        }
-
-        public Uri EndpointUri { get; private set; }
     }
 }
