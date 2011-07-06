@@ -107,6 +107,7 @@
     <Compile Include="NancyPackageServer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\ApiSettings.cs" />
     <Compile Include="Settings\EndpointSettings.cs" />
   </ItemGroup>
   <ItemGroup>
