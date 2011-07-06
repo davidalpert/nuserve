@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace nuserve.Settings
 {
@@ -20,5 +17,10 @@ namespace nuserve.Settings
         public int Port { get; set; }
         public string HostName { get; set; }
         public string Protocol { get; set; }
+
+        public Uri GetEndpointUri()
+        {
+            return new UriBuilder(Protocol, HostName, Port).Uri;
+        }
     }
 }

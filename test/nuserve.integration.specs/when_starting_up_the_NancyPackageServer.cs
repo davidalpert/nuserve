@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using developwithpassion.specifications;
-using Machine.Specifications;
-using EasyHttp.Http;
-using nuserve;
-using developwithpassion.specifications.nsubstitue;
 using System.Net;
-using System.Diagnostics;
+using developwithpassion.specifications.nsubstitue;
+using EasyHttp.Http;
+using Machine.Specifications;
+using nuserve;
 
 namespace nuserve.integration.specs
 {
-    public class when_starting_up_the_NancyPackageServer : Observes<InProcessPackageServer, NancyPackageServer>
+    public class when_starting_up_the_NancyPackageServer : Observes<ISelfHostingPackageServer, SelfHostingPackageServer>
     {
         static HttpClient client;
 

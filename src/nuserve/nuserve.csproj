@@ -101,6 +101,7 @@
     <Compile Include="Configuration\CoreRegistry.cs" />
     <Compile Include="Configuration\InMemoryStructureMapBindingContext.cs" />
     <Compile Include="Configuration\SettingsScanner.cs" />
+    <Compile Include="ISelfHostingPackageServer.cs" />
     <Compile Include="IoC.cs" />
     <Compile Include="Modules\TestModule.cs" />
     <Compile Include="NancyPackageServer.cs" />
