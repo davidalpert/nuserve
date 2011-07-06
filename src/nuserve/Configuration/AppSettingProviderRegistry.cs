@@ -1,8 +1,8 @@
 ﻿using FubuCore.Binding;
 using FubuCore.Configuration;
 using FubuCore.Reflection;
-using Microsoft.Practices.ServiceLocation;
 using StructureMap.Configuration.DSL;
+using Microsoft.Practices.ServiceLocation;
 using StructureMap.ServiceLocatorAdapter;
 
 namespace FubuMVC.StructureMap

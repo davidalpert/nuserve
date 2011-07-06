@@ -2,6 +2,11 @@ using System;
 using Nancy.Hosting.Self;
 using nuserve.Settings;
 using log4net;
+using NuGet.Server.Infrastructure;
+using System.IO;
+using System.Reflection;
+using NuGet.Server.DataServices;
+using System.Data.Services;
 
 namespace nuserve
 {
@@ -18,6 +23,7 @@ namespace nuserve
 
     public class NancyPackageServer : InProcessPackageServer
     {
+        private DataServiceHost serviceHost;
         EndpointSettings settings;
 
         private ILog log = null;
@@ -36,28 +42,39 @@ namespace nuserve
 
         public void Start()
         {
-            var uri = new UriBuilder(settings.Protocol, settings.HostName, settings.Port).Uri;
+            Stop();
 
-            ensure_host_is_stopped();
+            // configure the PackageUtility to serve packages from our app's local ~/packages/ folder
+            var exeRoot = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            PackageUtility.PackagePhysicalPath = Path.Combine(exeRoot, "Packages");
+            PackageUtility.ResolveAppRelativePathStrategy = s => Path.Combine(exeRoot, Path.Combine("Packages", s.TrimStart('~', '/')));
 
-            host = new NancyHost(uri);
+            // form the base URI from our EndpointSettings
+            var baseUri = new UriBuilder(settings.Protocol, settings.HostName, settings.Port).Uri;
+
+            // form a relative uri for the odata service
+            var packages_odata_uri = new UriBuilder(baseUri);
+            packages_odata_uri.Path = "/nuget/packages";
+
+            // start up a DataServiceHost to host our PackagesOData service 
+            Uri[] uriArray = { packages_odata_uri.Uri };
+            Type serviceType = typeof(Packages);
+            serviceHost = new DataServiceHost(serviceType, uriArray);
+            serviceHost.Open();
+
+            // start up Nancy to host our non-odata routes
+            host = new NancyHost(baseUri);
             host.Start();
 
-            IsListening = true;
-            EndpointUri = uri;
-
-            log.InfoFormat("Nancy now listening at: {0}", uri);
+            log.InfoFormat("Packages OData feed now listenting at: {0}", packages_odata_uri);
+            log.InfoFormat("Nancy now listening at: {0}", baseUri);
             log.Info("nuserve started.");
+
+            EndpointUri = baseUri;
+            IsListening = true;
         }
 
         public void Stop()
-        {
-            ensure_host_is_stopped();
-
-            log.Info("nuserve stopped.");
-        }
-
-        private void ensure_host_is_stopped()
         {
             if (host != null)
             {
@@ -66,22 +83,18 @@ namespace nuserve
                 EndpointUri = null;
                 host = null;
             }
+
+            log.Info("nuserve is stopped.");
         }
 
         public void Pause()
         {
             host.Stop();
-            IsListening = false;
-
-            log.Info("nuserve paused.");
         }
 
         public void Continue()
         {
             host.Start();
-            IsListening = true;
-
-            log.Info("nuserve resumed.");
         }
 
         public bool IsListening { get; private set; }

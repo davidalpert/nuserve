@@ -1,8 +1,5 @@
 using System;
 using StructureMap;
-using log4net;
-using Microsoft.Practices.ServiceLocation;
-using StructureMap.ServiceLocatorAdapter;
 
 namespace nuserve
 {
