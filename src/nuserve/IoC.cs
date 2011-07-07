@@ -5,18 +5,31 @@ namespace nuserve
 {
     public class IoC
     {
+        static bool initialized;
+        static object s_lock = new Object();
+
         public static void Bootstrap()
         {
-            ObjectFactory.Initialize(x =>
+            if (!initialized)
             {
-                x.Scan(a =>
+                lock (s_lock)
                 {
-                    a.AssemblyContainingType<Program>();
-                    a.LookForRegistries();
-                });
-            });
+                    if (!initialized)
+                    {
 
-            ObjectFactory.AssertConfigurationIsValid();
+                        ObjectFactory.Initialize(x =>
+                        {
+                            x.Scan(a =>
+                            {
+                                a.AssemblyContainingType<Program>();
+                                a.LookForRegistries();
+                            });
+                        });
+
+                        ObjectFactory.AssertConfigurationIsValid();
+                    }
+                }
+            }
         }
 
         public static T Get<T>()

@@ -63,11 +63,11 @@
     <Reference Include="Nancy, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Nancy.0.6.0\lib\4.0\Nancy.dll</HintPath>
     </Reference>
+    <Reference Include="Nancy.BootStrappers.StructureMap">
+      <HintPath>..\..\lib\nancy\Nancy.BootStrappers.StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="Nancy.Hosting.Self, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Nancy.Hosting.Self.0.6.0\lib\4.0\Nancy.Hosting.Self.dll</HintPath>
-    </Reference>
-    <Reference Include="Nancy.ViewEngines.Razor">
-      <HintPath>..\..\packages\Nancy.Viewengines.Razor.0.6.0\lib\4.0\Nancy.ViewEngines.Razor.dll</HintPath>
     </Reference>
     <Reference Include="Ninject">
       <HintPath>..\..\packages\Ninject.2.2.1.4\lib\net40-Full\Ninject.dll</HintPath>
@@ -114,6 +114,7 @@
     <Compile Include="Configuration\AppSettingProviderRegistry.cs" />
     <Compile Include="Configuration\CoreRegistry.cs" />
     <Compile Include="Configuration\InMemoryStructureMapBindingContext.cs" />
+    <Compile Include="Configuration\NuserveNancyBootstrapper.cs" />
     <Compile Include="Configuration\SettingsScanner.cs" />
     <Compile Include="Infrastructure\AuthorizePackageOperations.cs" />
     <Compile Include="ISelfHostingPackageServer.cs" />
@@ -127,9 +128,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\staticview.html" />
-    <None Include="app.config">
+    <Content Include="app.config">
       <SubType>Designer</SubType>
-    </None>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
