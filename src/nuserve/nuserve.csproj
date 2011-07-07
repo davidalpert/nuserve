@@ -63,8 +63,8 @@
     <Reference Include="Nancy, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Nancy.0.6.0\lib\4.0\Nancy.dll</HintPath>
     </Reference>
-    <Reference Include="Nancy.BootStrappers.StructureMap">
-      <HintPath>..\..\lib\nancy\Nancy.BootStrappers.StructureMap.dll</HintPath>
+    <Reference Include="Nancy.BootStrappers.StructureMap, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Nancy.BootStrappers.StructureMap.0.6\lib\net40\Nancy.BootStrappers.StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="Nancy.Hosting.Self, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Nancy.Hosting.Self.0.6.0\lib\4.0\Nancy.Hosting.Self.dll</HintPath>
