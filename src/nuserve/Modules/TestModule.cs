@@ -4,20 +4,23 @@ using Nancy;
 using NuGet;
 using nuserve.Infrastructure;
 using nuserve.Settings;
+using NuGet.Server.Infrastructure;
 
 namespace nuserve
 {
     public class TestModule : NancyModule
     {
         IAuthorizePackageOperations authService;
+        IServerPackageRepository packageRepo;
 
         /// <summary>
         /// Initializes a new instance of the TestModule class.
         /// </summary>
         /// <param name="authService"></param>
         /// <param name="settings"></param>
-        public TestModule(IAuthorizePackageOperations authService)
+        public TestModule(IAuthorizePackageOperations authService, IServerPackageRepository packageRepo)
         {
+            this.packageRepo = packageRepo;
             this.authService = authService;
 
             DefineHandlers();
@@ -41,8 +44,18 @@ namespace nuserve
                 var package = new ZipPackage(Request.Body);
 
                 // Make sure they can access this package
-                return Authenticate(apiKey, package.Id,
-                             () => "Success!" /* _serverRepository.AddPackage(package)*/);
+                return Authenticate(apiKey, package.Id, () =>
+                {
+                    try
+                    {
+                        packageRepo.AddPackage(package);
+                        return new Nancy.Response { StatusCode = HttpStatusCode.OK };
+                    }
+                    catch
+                    {
+                        return new Nancy.Response { StatusCode = HttpStatusCode.InternalServerError };
+                    }
+                });
             };
         }
 

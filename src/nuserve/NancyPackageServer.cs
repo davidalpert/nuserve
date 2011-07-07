@@ -1,11 +1,8 @@
 using System;
 using System.Data.Services;
-using System.IO;
-using System.Reflection;
 using log4net;
 using Nancy.Hosting.Self;
 using NuGet.Server.DataServices;
-using NuGet.Server.Infrastructure;
 using nuserve.Settings;
 
 namespace nuserve
@@ -43,8 +40,6 @@ namespace nuserve
 
         public void Start()
         {
-            configure_PackageUtility_to_serve_packages_from_our_apps_local_packages_folder();
-
             EndpointUri = settings.GetEndpointUri();
 
             start_OData_package_service(EndpointUri);
@@ -78,13 +73,6 @@ namespace nuserve
         public void Dispose()
         {
             Stop();
-        }
-
-        private static void configure_PackageUtility_to_serve_packages_from_our_apps_local_packages_folder()
-        {
-            var exeRoot = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            PackageUtility.PackagePhysicalPath = Path.Combine(exeRoot, "Packages");
-            PackageUtility.ResolveAppRelativePathStrategy = s => Path.Combine(exeRoot, Path.Combine("Packages", s.TrimStart('~', '/')));
         }
 
         private Uri build_Packages_OData_feed_uri(Uri baseEndpoint)
