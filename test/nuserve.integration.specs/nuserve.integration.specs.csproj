@@ -58,6 +58,9 @@
     <Reference Include="JsonFx">
       <HintPath>..\..\packages\JsonFx.2.0.1106.2610\lib\net40\JsonFx.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Machine.Fakes">
       <HintPath>..\..\packages\Machine.Fakes.0.2.3.3\lib\Machine.Fakes.dll</HintPath>
     </Reference>

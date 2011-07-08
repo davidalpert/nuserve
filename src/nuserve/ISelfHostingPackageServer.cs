@@ -10,6 +10,5 @@ namespace nuserve
         void Continue();
 
         bool IsListening { get; }
-        Uri EndpointUri { get; }
     }
 }

@@ -25,8 +25,6 @@ namespace nuserve
             this.log = log;
         }
 
-        public Uri EndpointUri { get; private set; }
-
         public bool IsListening
         {
             get
@@ -40,15 +38,11 @@ namespace nuserve
 
         public void Start()
         {
-            EndpointUri = settings.GetEndpointUri();
+            start_OData_package_service();
 
-            start_OData_package_service(EndpointUri);
-
-            start_Nancy_server_to_handle_non_OData_routes(EndpointUri);
+            start_Nancy_server_to_handle_non_OData_routes();
 
             log.Info("nuserve started.");
-
-            EndpointUri = EndpointUri;
         }
 
         public void Stop()
@@ -75,18 +69,11 @@ namespace nuserve
             Stop();
         }
 
-        private Uri build_Packages_OData_feed_uri(Uri baseEndpoint)
-        {
-            var packages_odata_uri = new UriBuilder(baseEndpoint);
-            packages_odata_uri.Path = "/nuget/Packages";
-            return packages_odata_uri.Uri;
-        }
-
-        private void start_OData_package_service(Uri baseUri)
+        private void start_OData_package_service()
         {
             stop_OData_package_service();
 
-            var packages_odata_uri = build_Packages_OData_feed_uri(baseUri);
+            var packages_odata_uri = new Uri(settings.PackageListUri);
 
             Uri[] uriArray = { packages_odata_uri };
             Type serviceType = typeof(Packages);
@@ -114,13 +101,14 @@ namespace nuserve
             }
         }
 
-        private void start_Nancy_server_to_handle_non_OData_routes(Uri baseUri)
+        private void start_Nancy_server_to_handle_non_OData_routes()
         {
             stop_Nancy_server();
 
-            host = new NancyHost(baseUri);
+            var mgrUri = new Uri(settings.PackageManagerUri);
+            host = new NancyHost(mgrUri);
             host.Start();
-            log.InfoFormat("Nancy now listening at: {0}", EndpointUri);
+            log.InfoFormat("Nancy now listening at: {0}", mgrUri);
         }
 
         private void stop_Nancy_server()

@@ -9,18 +9,11 @@ namespace nuserve.Settings
         /// </summary>
         public EndpointSettings()
         {
-            Port = 5656;
-            HostName = "localhost";
-            Protocol = "http";
+            PackageListUri = "http://localhost:5656/packages";
+            PackageManagerUri = "http://localhost:5656/";
         }
 
-        public int Port { get; set; }
-        public string HostName { get; set; }
-        public string Protocol { get; set; }
-
-        public Uri GetEndpointUri()
-        {
-            return new UriBuilder(Protocol, HostName, Port).Uri;
-        }
+        public string PackageListUri { get; set; }
+        public string PackageManagerUri { get; set; }
     }
 }
