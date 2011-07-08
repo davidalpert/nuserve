@@ -78,7 +78,7 @@ namespace nuserve
         private Uri build_Packages_OData_feed_uri(Uri baseEndpoint)
         {
             var packages_odata_uri = new UriBuilder(baseEndpoint);
-            packages_odata_uri.Path = "/nuget/packages";
+            packages_odata_uri.Path = "/nuget/Packages";
             return packages_odata_uri.Uri;
         }
 
