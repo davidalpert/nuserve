@@ -16,7 +16,7 @@ source_root = "./src"
 test_root = "./test"
 lib_root = "./packages"
 package_root = "./packages"
-tools_root = "./tools"
+tools_rot = "./tools"
 
 build_root = "./build" # used as a pre-deployment staging folder
 test_build_root = "./test-build" # used for integration testing
@@ -31,6 +31,8 @@ Albacore.configure do |config|
 		File.join(Dir.glob(File.join("./packages","#{package}.*")).sort.last, "tools", tool)
 	end
 
+	config.log_level = :verbose
+
 	config.mspec.command = package_tool("Machine.Specifications", "mspec-x86-clr4.exe")
 end
 
@@ -42,7 +44,7 @@ CLOBBER.include("./**/_*", "./**/*.user", "./**/*.cache", "./**/*.suo", "TestRes
 # and so begin the build script tasks/targets
 
 desc 'Default: clean and (re)build the solution'
-task :default => ["clean", "build:all", "integration"]
+task :default => ["clean", "build:all", "test:all"]
 
 # ---------------------------------------------
 
@@ -99,7 +101,7 @@ namespace :build do
 end
 
 desc "Run unit tests"
-task :test => ["clean", "build:all", "test:integration"]
+task :test => ["clean", "build:all", "test:unit"]
 
 desc "Run integration tests"
 task :integration => ["clean", "build:all", "test:integration"]
@@ -117,12 +119,11 @@ namespace :test do
 	task :all, [:config] do |t, args|
 		Rake::Task["test:unit"].invoke(args[:config])
 		Rake::Task["test:integration"].invoke(args[:config])
-		Rake::Task["build:views"].invoke()
-		Rake::Task["test:features"].invoke()
+		#Rake::Task["test:features"].invoke(args[:config])
 	end
 
-	desc 'Run unit tests'
-	nunit :unit, [:config] do |nunit, args|
+	desc 'Verify unit specs'
+	mspec :unit, [:config] do |mspec, args|
 		Rake::Task["build:all"].invoke(args[:config])
 		
 		configuration = :Debug
@@ -130,18 +131,28 @@ namespace :test do
 			configuration = args[:config]
 		end
 
-		puts "******* Then env teamcity.dotnet.nunitlauncher #{ENV['teamcity.dotnet.nunitlauncher']}"
-		puts "******* Then env teamcity.dotnet.nunitaddin #{ENV['teamcity.dotnet.nunitaddin']}"
-		FileUtils.copy(addin, "./tools/NUnit/addins") if addin	
-		nunit.command = "./tools/NUnit/nunit-console.exe"
-		assemblies = "#{test_root}/**/bin/#{configuration}/*.Tests.dll"
-		puts "looking for #{assemblies}"
-		nunit.assemblies = FileList[assemblies]
+		include_pattern = "#{test_root}/**/bin/#{configuration}/*.Specs.dll"
+		exclude_pattern = "#{test_root}/**/bin/#{configuration}/*.Integration.Specs.dll"
+
+		put_banner "+[#{include_pattern}] -[#{exclude_pattern}]"
+
+		mspec.assemblies FileList[include_pattern].exclude(exclude_pattern)
 	end
 
-	desc 'Run integration specs'
-	mspec :integration => ["build"] do |mspec|
-		mspec.assemblies FileList["#{test_root}/**/bin/**/*.Integration.Specs.dll"]
+	desc 'Verify integration specs'
+	mspec :integration, [:config] do |mspec, args|
+		Rake::Task["build:all"].invoke(args[:config])
+		
+		configuration = :Debug
+		if args[:config] != nil && args[:config] != 'local' then
+			configuration = args[:config]
+		end
+
+		include_pattern = "#{test_root}/**/bin/#{configuration}/*.Integration.Specs.dll"
+
+		#put_banner include_pattern
+
+		mspec.assemblies FileList[include_pattern]
 	end
 end
 

@@ -4,7 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scripts", "{B0CD4D9F-3358-42B0-BD39-0B5585BE243D}"
 	ProjectSection(SolutionItems) = preProject
 		gemfile = gemfile
-		rakefile = rakefile
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -13,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "client", "client\client.csproj", "{0A0B1D2C-0073-4DBE-9408-B4055DD2499A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nuserve.integration.specs", "test\nuserve.integration.specs\nuserve.integration.specs.csproj", "{6AA8E365-DF52-4E8D-ADBA-3F62E2B2FDA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nuserve.specs", "test\nuserve.specs\nuserve.specs.csproj", "{74710694-6D91-468F-BE11-B70B6394FD4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -90,6 +91,25 @@ Global
 		{6AA8E365-DF52-4E8D-ADBA-3F62E2B2FDA8}.stage|Any CPU.ActiveCfg = Release|Any CPU
 		{6AA8E365-DF52-4E8D-ADBA-3F62E2B2FDA8}.stage|Any CPU.Build.0 = Release|Any CPU
 		{6AA8E365-DF52-4E8D-ADBA-3F62E2B2FDA8}.stage|x86.ActiveCfg = Release|Any CPU
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.Coverage|Any CPU.ActiveCfg = Release|x86
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.Coverage|x86.ActiveCfg = Release|x86
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.Coverage|x86.Build.0 = Release|x86
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.Debug|x86.ActiveCfg = Debug|x86
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.Debug|x86.Build.0 = Debug|x86
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.dev|Any CPU.ActiveCfg = Debug|x86
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.dev|x86.ActiveCfg = Debug|x86
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.dev|x86.Build.0 = Debug|x86
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.prod|Any CPU.ActiveCfg = Release|x86
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.prod|x86.ActiveCfg = Release|x86
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.prod|x86.Build.0 = Release|x86
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.Release|Any CPU.ActiveCfg = Release|x86
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.Release|x86.ActiveCfg = Release|x86
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.Release|x86.Build.0 = Release|x86
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.stage|Any CPU.ActiveCfg = Release|x86
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.stage|x86.ActiveCfg = Release|x86
+		{74710694-6D91-468F-BE11-B70B6394FD4F}.stage|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

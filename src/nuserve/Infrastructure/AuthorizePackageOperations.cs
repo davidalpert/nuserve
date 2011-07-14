@@ -26,7 +26,7 @@ namespace nuserve.Infrastructure
 
         public bool ClientCanPublishPackage(string apiKey, string packageId)
         {
-            if (String.IsNullOrWhiteSpace(apiKey))
+            if (String.IsNullOrWhiteSpace(apiKey) || String.IsNullOrWhiteSpace(packageId))
                 return false;
 
             return settings.ApiKey.ToLowerInvariant().Trim() == apiKey.ToLowerInvariant().Trim();
