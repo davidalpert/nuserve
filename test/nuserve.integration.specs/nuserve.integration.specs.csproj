@@ -73,6 +73,9 @@
     <Reference Include="NSubstitute">
       <HintPath>..\..\packages\NSubstitute.1.1.0.0\lib\35\NSubstitute.dll</HintPath>
     </Reference>
+    <Reference Include="NuGet">
+      <HintPath>..\..\packages\NuGet.CommandLine.1.4.20615.182\tools\NuGet.exe</HintPath>
+    </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\..\packages\structuremap.2.6.2\lib\StructureMap.dll</HintPath>
     </Reference>
@@ -85,12 +88,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NuServeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="when_requesting_a_list_of_available_packages.cs">
+      <DependentUpon>NuServeContext.cs</DependentUpon>
+    </Compile>
     <Compile Include="when_starting_up_the_NancyPackageServer.cs">
       <SubType>Code</SubType>
+      <DependentUpon>NuServeContext.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\packages\NuGet.CommandLine.1.4.20615.182\NuGet.CommandLine.1.4.20615.182.nupkg">
+      <Link>Packages\NuGet.CommandLine.1.4.20615.182.nupkg</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\packages\NuGet.Core.1.4.20615.9012\NuGet.Core.1.4.20615.9012.nupkg">
+      <Link>Packages\NuGet.Core.1.4.20615.9012.nupkg</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\packages\NuGet.Server.1.4.20623.9012\NuGet.Server.1.4.20623.9012.nupkg">
+      <Link>Packages\NuGet.Server.1.4.20623.9012.nupkg</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -104,7 +124,7 @@
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
+  -->
   <Target Name="AfterBuild">
   </Target>
-  -->
 </Project>

@@ -19,6 +19,7 @@ package_root = "./packages"
 tools_root = "./tools"
 
 build_root = "./build" # used as a pre-deployment staging folder
+test_build_root = "./test-build" # used for integration testing
 
 solution_file = FileList["./**/*.sln"].first
 commit = Git.open(".").log.first.sha[0..10] rescue 'na'
@@ -30,7 +31,7 @@ Albacore.configure do |config|
 		File.join(Dir.glob(File.join("./packages","#{package}.*")).sort.last, "tools", tool)
 	end
 
-	config.mspec.command = package_tool("Machine.Specifications", "mspec-clr4.exe")
+	config.mspec.command = package_tool("Machine.Specifications", "mspec-x86-clr4.exe")
 end
 
 CLEAN.include("#{source_root}/**/bin", "#{source_root}/**/obj", "#{test_root}/**/obj", "#{test_root}/**/bin")
@@ -139,7 +140,7 @@ namespace :test do
 	end
 
 	desc 'Run integration specs'
-	mspec :integration do |mspec|
+	mspec :integration => ["build"] do |mspec|
 		mspec.assemblies FileList["#{test_root}/**/bin/**/*.Integration.Specs.dll"]
 	end
 end
