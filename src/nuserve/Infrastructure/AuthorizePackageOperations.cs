@@ -6,11 +6,6 @@ using nuserve.Settings;
 
 namespace nuserve.Infrastructure
 {
-    public interface IAuthorizePackageOperations
-    {
-        bool ClientCanPublishPackage(string apiKey, string packageId);
-    }
-
     public class AuthorizePackageOperations : IAuthorizePackageOperations
     {
         ApiSettings settings;

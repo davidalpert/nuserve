@@ -118,6 +118,7 @@
     <Compile Include="Configuration\NuserveNancyBootstrapper.cs" />
     <Compile Include="Configuration\SettingsScanner.cs" />
     <Compile Include="Infrastructure\AuthorizePackageOperations.cs" />
+    <Compile Include="Infrastructure\IAuthorizePackageOperations.cs" />
     <Compile Include="ISelfHostingPackageServer.cs" />
     <Compile Include="IoC.cs" />
     <Compile Include="Modules\TestModule.cs" />

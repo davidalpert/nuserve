@@ -88,6 +88,9 @@
     <Reference Include="NSubstitute">
       <HintPath>..\..\packages\NSubstitute.1.1.0.0\lib\35\NSubstitute.dll</HintPath>
     </Reference>
+    <Reference Include="Should">
+      <HintPath>..\..\packages\Should.1.1.12.0\lib\Should.dll</HintPath>
+    </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\..\packages\structuremap.2.6.2\lib\StructureMap.dll</HintPath>
     </Reference>
@@ -100,7 +103,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="when_authorizing_package_operations.cs" />
+    <Compile Include="AuthorizePackageOperations_Specs.cs" />
+    <Compile Include="when_authorizing_a_publish.cs">
+      <DependentUpon>AuthorizePackageOperations_Specs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +114,9 @@
       <Project>{F5AF94E8-B767-40C0-AFB3-F87170EFBE1C}</Project>
       <Name>nuserve</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

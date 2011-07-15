@@ -134,7 +134,7 @@ namespace :test do
 		include_pattern = "#{test_root}/**/bin/#{configuration}/*.Specs.dll"
 		exclude_pattern = "#{test_root}/**/bin/#{configuration}/*.Integration.Specs.dll"
 
-		put_banner "+[#{include_pattern}] -[#{exclude_pattern}]"
+		put_banner "verifying: +[#{include_pattern}] -[#{exclude_pattern}]"
 
 		mspec.assemblies FileList[include_pattern].exclude(exclude_pattern)
 	end
@@ -150,7 +150,7 @@ namespace :test do
 
 		include_pattern = "#{test_root}/**/bin/#{configuration}/*.Integration.Specs.dll"
 
-		#put_banner include_pattern
+		put_banner "verifying: +[#{include_pattern}]"
 
 		mspec.assemblies FileList[include_pattern]
 	end
