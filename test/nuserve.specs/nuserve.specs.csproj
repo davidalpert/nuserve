@@ -94,6 +94,9 @@
     <Reference Include="Nancy, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Nancy.0.6.0\lib\4.0\Nancy.dll</HintPath>
     </Reference>
+    <Reference Include="Nancy.BootStrappers.StructureMap, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Nancy.BootStrappers.StructureMap.0.6\lib\net40\Nancy.BootStrappers.StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="Nancy.Testing">
       <HintPath>..\..\packages\Nancy.Testing.0.6.0\lib\net40\Nancy.Testing.dll</HintPath>
     </Reference>
@@ -105,7 +108,7 @@
     <Reference Include="Should">
       <HintPath>..\..\packages\Should.1.1.12.0\lib\Should.dll</HintPath>
     </Reference>
-    <Reference Include="StructureMap">
+    <Reference Include="StructureMap, Version=2.6.2.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
       <HintPath>..\..\packages\structuremap.2.6.2\lib\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -125,6 +128,8 @@
       <DependentUpon>AuthorizePackageOperations_Specs.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="when_handling_an_authorized_request_to_publish_a_package.cs" />
+    <Compile Include="when_handling_an_authorized_request_to_publish_a_package_with_Nancy_Testing_Browser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\nuserve\nuserve.csproj">

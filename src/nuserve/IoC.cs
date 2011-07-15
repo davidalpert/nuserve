@@ -1,5 +1,6 @@
 using System;
 using StructureMap;
+using nuserve.Configuration;
 
 namespace nuserve
 {
@@ -21,7 +22,7 @@ namespace nuserve
                         {
                             x.Scan(a =>
                             {
-                                a.AssemblyContainingType<Program>();
+                                a.AssemblyContainingType<NugetServerRegistry>();
                                 a.LookForRegistries();
                             });
                         });
