@@ -121,7 +121,7 @@
     <Compile Include="Infrastructure\IAuthorizePackageOperations.cs" />
     <Compile Include="ISelfHostingPackageServer.cs" />
     <Compile Include="IoC.cs" />
-    <Compile Include="Modules\TestModule.cs" />
+    <Compile Include="Modules\PackageFilesModule.cs" />
     <Compile Include="SelfHostingPackageServer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

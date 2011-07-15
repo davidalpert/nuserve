@@ -76,6 +76,12 @@
     <Reference Include="developwithpassion.specifications.nsubstitue">
       <HintPath>..\..\packages\developwithpassion.specifications.nsubstitue.0.4.13.0\lib\developwithpassion.specifications.nsubstitue.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\..\packages\Nancy.Testing.0.6.0\lib\net40\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPlus">
+      <HintPath>..\..\packages\Nancy.Testing.0.6.0\lib\net40\HtmlAgilityPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Machine.Fakes">
       <HintPath>..\..\packages\Machine.Fakes.0.2.3.3\lib\Machine.Fakes.dll</HintPath>
     </Reference>
@@ -85,9 +91,17 @@
     <Reference Include="Machine.Specifications">
       <HintPath>..\..\packages\Machine.Specifications.0.4.13.0\lib\Machine.Specifications.dll</HintPath>
     </Reference>
+    <Reference Include="Nancy, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Nancy.0.6.0\lib\4.0\Nancy.dll</HintPath>
+    </Reference>
+    <Reference Include="Nancy.Testing">
+      <HintPath>..\..\packages\Nancy.Testing.0.6.0\lib\net40\Nancy.Testing.dll</HintPath>
+    </Reference>
     <Reference Include="NSubstitute">
       <HintPath>..\..\packages\NSubstitute.1.1.0.0\lib\35\NSubstitute.dll</HintPath>
     </Reference>
+    <Reference Include="NuGet.Core, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="NuGet.Server, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Should">
       <HintPath>..\..\packages\Should.1.1.12.0\lib\Should.dll</HintPath>
     </Reference>
@@ -101,6 +115,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="xunit">
+      <HintPath>..\..\packages\xunit.1.7.0.1540\lib\xunit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthorizePackageOperations_Specs.cs" />
