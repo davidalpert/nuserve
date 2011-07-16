@@ -12,9 +12,9 @@ namespace nuserve.integration.specs
 
         Establish context = () =>
         {
-            listCommand = BuildListCommandFor("http://localhost:5051/packages");
-
             StartNuServeOn("http://localhost:5051/packages", "http://localhost:5051/");
+
+            listCommand = BuildListCommandFor("http://localhost:5051/packages");
         };
 
         Because of = () => packages = listCommand.GetPackages();

@@ -128,7 +128,7 @@
       <DependentUpon>AuthorizePackageOperations_Specs.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="when_handling_an_authorized_request_to_publish_a_package.cs" />
+    <Compile Include="publishing_a_package_specs.cs" />
     <Compile Include="when_handling_an_authorized_request_to_publish_a_package_with_Nancy_Testing_Browser.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,7 @@ using NSubstitute;
 using NuGet.Commands;
 using nuserve;
 using nuserve.Settings;
+using NuGet.Common;
 
 namespace nuserve.integration.specs
 {
@@ -48,6 +49,18 @@ namespace nuserve.integration.specs
             sourceProvider.LoadPackageSources().Returns(call => new List<NuGet.PackageSource> { new NuGet.PackageSource(source) });
             NuGet.IPackageRepositoryFactory packageRepositoryFactory = new NuGet.PackageRepositoryFactory();
             return new ListCommand(packageRepositoryFactory, sourceProvider);
+        }
+
+        protected static NuGet.Commands.PublishCommand BuildPublishCommandFor(string source)
+        {
+            NuGet.IPackageSourceProvider sourceProvider = Substitute.For<NuGet.IPackageSourceProvider>();
+            sourceProvider.LoadPackageSources().Returns(call => new List<NuGet.PackageSource> { new NuGet.PackageSource(source) });
+
+            var cmd = new PublishCommand(sourceProvider);
+            cmd.Console = Substitute.For<IConsole>();
+            cmd.Source = source;
+
+            return cmd;
         }
     }
 }

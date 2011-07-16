@@ -90,6 +90,9 @@
   <ItemGroup>
     <Compile Include="NuServeContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="when_publishing_a_package_to_the_default_packages_folder.cs">
+      <DependentUpon>NuServeContext.cs</DependentUpon>
+    </Compile>
     <Compile Include="when_requesting_a_list_of_available_packages.cs">
       <DependentUpon>NuServeContext.cs</DependentUpon>
     </Compile>
@@ -99,6 +102,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\packages\FubuCore.0.9.1.32\FubuCore.0.9.1.32.nupkg">
+      <Link>TestPackages\FubuCore.0.9.1.32.nupkg</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="..\..\packages\NuGet.CommandLine.1.4.20615.182\NuGet.CommandLine.1.4.20615.182.nupkg">
       <Link>Packages\NuGet.CommandLine.1.4.20615.182.nupkg</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -111,6 +118,10 @@
       <Link>Packages\NuGet.Server.1.4.20623.9012.nupkg</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="..\..\packages\Topshelf.2.2.2.0\Topshelf.2.2.2.0.nupkg">
+      <Link>TestPackages\Topshelf.2.2.2.0.nupkg</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +129,13 @@
       <Project>{F5AF94E8-B767-40C0-AFB3-F87170EFBE1C}</Project>
       <Name>nuserve</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="..\..\packages\NuGet.CommandLine.1.4.20615.182\tools\NuGet.exe">
+      <Link>Tools\NuGet.exe</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
