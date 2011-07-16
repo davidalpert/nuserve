@@ -17,7 +17,6 @@ namespace nuserve
                 {
                     if (!initialized)
                     {
-
                         ObjectFactory.Initialize(x =>
                         {
                             x.Scan(a =>
@@ -28,6 +27,8 @@ namespace nuserve
                         });
 
                         ObjectFactory.AssertConfigurationIsValid();
+
+                        initialized = true;
                     }
                 }
             }
