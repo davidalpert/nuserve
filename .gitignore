@@ -53,3 +53,9 @@ Gemfile.lock
 
 #nuget packages
 [Pp]ackages
+
+#mightymoose cache
+*_mm_cache.bin
+
+#vim swap file
+*.swp
