@@ -1,5 +1,8 @@
 
+require 'test/unit/assertions'
 require 'Win32/Process'
+
+World(Test::Unit::Assertions) # not sure why this is needed?
 
 include FileUtils
 
@@ -53,6 +56,13 @@ end
 
 Then /^I should see (\d+) packages$/ do | n |
 	puts result
+	
+	package_count = 0
+	result.each_line do |line|
+		package_count += 1 if line.match(/^(\w|\.)+\s+[0-9.]+/)
+	end
+
+	assert_equal(package_count, n.to_i, "not the right number of packages")
 end
 
 # http://blog.robseaman.com/2008/12/12/sending-ctrl-c-to-a-subprocess-with-ruby
