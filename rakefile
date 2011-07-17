@@ -53,14 +53,9 @@ task :setup => ["setup:dep"]
 
 namespace :setup do
 
-	task :dep => ["setup:dep:gems", "setup:dep:packages", "setup:dep:os"]
+	task :dep => ["setup:dep:packages", "setup:dep:os"]
 
 	namespace :dep do
-
-		desc "Download and install gems from the Gemfile"
-		task :gems do
-			system "bundle install --system"
-		end
 
 		desc "Setup dependencies for nuget packages"
 		task :packages do
@@ -119,7 +114,7 @@ namespace :test do
 	task :all, [:config] do |t, args|
 		Rake::Task["test:unit"].invoke(args[:config])
 		Rake::Task["test:integration"].invoke(args[:config])
-		#Rake::Task["test:features"].invoke(args[:config])
+		Rake::Task["test:features"].invoke(args[:config])
 	end
 
 	desc 'Verify unit specs'
@@ -131,12 +126,12 @@ namespace :test do
 			configuration = args[:config]
 		end
 
-		include_pattern = "#{test_root}/**/bin/#{configuration}/*.Specs.dll"
-		exclude_pattern = "#{test_root}/**/bin/#{configuration}/*.Integration.Specs.dll"
+		include_pattern = "#{test_root}/**/bin/#{configuration}/*.[Ss]pecs.dll"
+		exclude_pattern = "#{test_root}/**/bin/#{configuration}/*.[Ii]ntegration.[Ss]pecs.dll"
 
 		put_banner "verifying: +[#{include_pattern}] -[#{exclude_pattern}]"
 
-		mspec.assemblies FileList[include_pattern].exclude(exclude_pattern)
+		mspec.assemblies = FileList[include_pattern].exclude(exclude_pattern)
 	end
 
 	desc 'Verify integration specs'
