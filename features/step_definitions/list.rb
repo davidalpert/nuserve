@@ -7,7 +7,7 @@ def package_tool(package, tool)
 	File.join(Dir.glob(File.join("./packages","#{package}.*")).sort.last, "tools", tool)
 end
 
-nuserve_startup_timeout_in_seconds = 5
+nuserve_startup_timeout_in_seconds = 2
 project_root = '.'
 project_packages_root = File.join(project_root, 'packages')
 bin_root = File.join(project_root, 'src', 'nuserve', 'bin', 'Debug')
@@ -20,7 +20,14 @@ pipe = :nil
 result = :nil
 
 Given /^nuserve is running$/ do
-	puts "started: [#{pipe.pid}] #{nuserve_exe}"
+	pipe = IO.popen(nuserve_exe)
+	puts "waiting for nuserve to start..."
+	(1..nuserve_startup_timeout_in_seconds).each do 
+		#print '.'
+		sleep 1
+	end
+	puts "... assuming that nuserve has started\n\n"
+	puts "[#{pipe.pid}] #{nuserve_exe}"
 end
 
 Given /^there are (\d+) packages in the server's folder$/ do | n |
@@ -53,13 +60,6 @@ end
 #Process.kill( 'INT', sysint_gpid)
 
 Before do
-	pipe = IO.popen(nuserve_exe)
-	print "\nwaiting for nuserve to start"
-	(1..nuserve_startup_timeout_in_seconds).each do 
-		print '.'
-		sleep 1
-	end
-	print "assuming that nuserve has started\n\n"
 end
 
 After do
