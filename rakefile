@@ -6,6 +6,8 @@ system "bundle install --system"
 require 'albacore'
 require 'rake/clean'
 require 'xmlsimple' # might use this later - to manipulate config files?
+require 'zip/zip'
+require 'cucumber/rake/task'
 
 include FileUtils
 
@@ -148,6 +150,10 @@ namespace :test do
 		put_banner "verifying: +[#{include_pattern}]"
 
 		mspec.assemblies FileList[include_pattern]
+	end
+
+	Cucumber::Rake::Task.new(:features) do |task|
+		task.cucumber_opts = ["features"]
 	end
 end
 

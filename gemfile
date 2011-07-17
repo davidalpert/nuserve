@@ -2,6 +2,9 @@ source :rubygems
 
 gem 'albacore'
 gem 'xml-simple'
+gem 'cucumber'
+gem 'rubyzip'
+gem 'win32-process'
 
 group :dev do
 end
