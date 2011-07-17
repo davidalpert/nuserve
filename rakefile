@@ -97,6 +97,14 @@ namespace :build do
 
 end
 
+def put_banner(text)
+	puts
+	puts "-------------------------------------------------------------"
+	puts text
+	puts "-------------------------------------------------------------"
+	puts
+end
+
 desc "Run unit tests"
 task :test => ["clean", "build:all", "test:unit"]
 
@@ -153,6 +161,9 @@ namespace :test do
 	end
 
 	Cucumber::Rake::Task.new(:features) do |task|
+
+		put_banner "verifying: features"
+
 		task.cucumber_opts = ["features"]
 	end
 end
@@ -170,13 +181,6 @@ namespace :util do
 	end
 end
 
-def put_banner(text)
-	puts
-	puts "-------------------------------------------------------------"
-	puts text
-	puts "-------------------------------------------------------------"
-	puts
-end
 
 def resolve_profile(profileName)
 	profile = $deployment_profiles["#{profileName}"]
