@@ -74,8 +74,8 @@ end
 
 After do
 	rm_bin_packages
-	Process.kill( 'KILL', pipe.pid )
-	pipe.close
+	Process.kill( 'KILL', pipe.pid ) unless pipe.nil?
+	pipe.close unless pipe.nil?
 end
 
 def rm_bin_packages()
