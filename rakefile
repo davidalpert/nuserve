@@ -14,19 +14,19 @@ include FileUtils
 # include our custom albacore tasks (if any)
 FileList["./Tools/albacore/**/*.rb"].each { |f| require f }
 
-source_root = "./src"
-test_root = "./test"
-lib_root = "./packages"
-package_root = "./packages"
-tools_rot = "./tools"
+source_root     = "./src"
+test_root       = "./test"
+lib_root        = "./packages"
+packages_root   = "./packages"
+tools_root      = "./tools"
 
-build_root = "./build" # used as a pre-deployment staging folder
-test_build_root = "./test-build" # used for integration testing
+build_root      = "./build" # used as a pre-deployment staging folder
+temp_build_root = "./temp" # used for integration testing
 
-solution_file = FileList["./**/*.sln"].first
-commit = Git.open(".").log.first.sha[0..10] rescue 'na'
-version = "0.0.1"
-msbuild_exe = File.join(ENV['windir'], 'Microsoft.NET','Framework',  'v4.0.30319', 'MSBuild.exe')
+solution_file   = FileList["./**/*.sln"].first
+commit          = Git.open(".").log.first.sha[0..10] rescue 'na'
+version         = "0.0.1"
+msbuild_exe     = File.join(ENV['windir'], 'Microsoft.NET','Framework',  'v4.0.30319', 'MSBuild.exe')
 
 Albacore.configure do |config|
 	def package_tool(package, tool)
@@ -40,7 +40,7 @@ end
 
 CLEAN.include("#{source_root}/**/bin", "#{source_root}/**/obj", "#{test_root}/**/obj", "#{test_root}/**/bin")
 
-CLOBBER.include("./**/_*", "./**/*.user", "./**/*.cache", "./**/*.suo", "TestResult.xml", "#{package_root}")
+CLOBBER.include("./**/_*", "./**/*.user", "./**/*.cache", "./**/*.suo", "TestResult.xml", "#{packages_root}")
 
 # ---------------------------------------------------------------------------------------------------------
 # and so begin the build script tasks/targets
@@ -62,18 +62,20 @@ namespace :setup do
 		desc "Setup dependencies for nuget packages"
 		task :packages do
 			FileList["**/packages.config"].each do |file|
-				sh "nuget install #{file} /OutputDirectory #{package_root}"
+				sh "nuget install #{file} /OutputDirectory #{packages_root}"
 			end
 		end
 	
 		desc "Setup dependencies for this OS (x86/x64)"
 		task :os do
 			folders = []
-			`find #{lib_root} -name 'binaries'`.each_line {|f| folders.push f.strip}
+			`find #{packages_root} -name 'binaries'`.each_line {|f| folders.push f.strip}
 			setup_os(nil,folders) 
 		end
 	end
 end
+
+# ---------------------------------------------
 
 desc "Build the project"
 task :build => ["build:all"]
@@ -95,6 +97,23 @@ namespace :build do
 	desc "Rebuild the project"
 	task :re => ["clean", "build:all"]
 
+	task :deploy, [:config] do |task, args|
+		Rake::Task["build:all"].invoke(args[:config])
+	
+		put_banner "deploying to #{temp_build_root}"
+	
+		# resolve config
+		configuration = :Debug
+		if args[:config] != nil && args[:config] != 'local' then
+			configuration = args[:config]
+		end
+	
+		rm_rf build_root
+		mkdir_p build_root
+		FileList["#{source_root}/nuserve/bin/#{configuration}/*.*"].each do |f|
+			cp f,build_root
+		end
+	end
 end
 
 def put_banner(text)
@@ -104,6 +123,8 @@ def put_banner(text)
 	puts "-------------------------------------------------------------"
 	puts
 end
+
+# ---------------------------------------------
 
 desc "Run unit tests"
 task :test => ["clean", "build:all", "test:unit"]
@@ -148,6 +169,7 @@ namespace :test do
 	mspec :integration, [:config] do |mspec, args|
 		Rake::Task["build:all"].invoke(args[:config])
 		
+		# resolve config
 		configuration = :Debug
 		if args[:config] != nil && args[:config] != 'local' then
 			configuration = args[:config]
@@ -160,13 +182,40 @@ namespace :test do
 		mspec.assemblies FileList[include_pattern]
 	end
 
-	Cucumber::Rake::Task.new(:features) do |task|
-
+	desc 'Verify features'
+	task :features, [:config] do | task, args | 
+		#Rake::Task["test:deploy"].invoke(args)
+		
 		put_banner "verifying: features"
+		Rake::Task["test:run_features"].invoke(args)
+	end
+
+	Cucumber::Rake::Task.new(:run_features) do |task|
 
 		task.cucumber_opts = ['features']
 	end
+
+	task :deploy, [:config] do |task, args|
+		Rake::Task["build:all"].invoke(args[:config])
+
+		put_banner "deploying to #{temp_build_root}"
+
+		# resolve config
+		configuration = :Debug
+		if args[:config] != nil && args[:config] != 'local' then
+			configuration = args[:config]
+		end
+
+		rm_rf temp_build_root
+		mkdir_p temp_build_root
+		FileList["#{source_root}/nuserve/bin/#{configuration}/*.*"].each do |f|
+			cp f,temp_build_root
+		end
+	end
 end
+
+
+# ---------------------------------------------
 
 namespace :util do
 
@@ -181,6 +230,7 @@ namespace :util do
 	end
 end
 
+# ---------------------------------------------
 
 def resolve_profile(profileName)
 	profile = $deployment_profiles["#{profileName}"]
