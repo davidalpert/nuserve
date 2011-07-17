@@ -112,7 +112,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\AppSettingProviderRegistry.cs" />
-    <Compile Include="Configuration\CoreRegistry.cs" />
     <Compile Include="Configuration\InMemoryStructureMapBindingContext.cs" />
     <Compile Include="Configuration\NugetServerRegistry.cs" />
     <Compile Include="Configuration\NuserveNancyBootstrapper.cs" />

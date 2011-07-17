@@ -4,6 +4,8 @@ using NuGet.Server.Infrastructure;
 using StructureMap.Configuration.DSL;
 using System.IO;
 using System.Reflection;
+using log4net;
+using FubuMVC.StructureMap;
 
 namespace nuserve.Configuration
 {
@@ -14,6 +16,19 @@ namespace nuserve.Configuration
         /// </summary>
         public NugetServerRegistry()
         {
+            Scan(a =>
+            {
+                a.TheCallingAssembly();
+
+                // wire up ISomething to Something
+                a.WithDefaultConventions();
+
+                // build up Settings on demand
+                a.Convention<SettingsScanner>();
+            });
+
+            For<ILog>().Use(() => LogManager.GetLogger(typeof(IoC)));
+
             // HACK: this doesn't belong here... the PackagePhysicalPath should provided by 
             //       an injectable dependency, but that's deeper into nuget source than I want to go.
             configure_PackageUtility_to_serve_packages_from_our_apps_local_packages_folder();
