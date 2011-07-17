@@ -121,10 +121,10 @@ namespace :test do
 	addin = "#{addin}-2.5.5.dll" if addin
 	
 	desc 'Run all tests (unit & acceptance)'
-	task :all, [:config] do |t, args|
+	task :all, [:tag, :config] do |t, args|
 		Rake::Task["test:unit"].invoke(args[:config])
 		Rake::Task["test:integration"].invoke(args[:config])
-		Rake::Task["test:features"].invoke(args[:config])
+		Rake::Task["test:features"].invoke(args[:tag],args[:config])
 	end
 
 	desc 'Verify unit specs'
@@ -164,7 +164,7 @@ namespace :test do
 
 		put_banner "verifying: features"
 
-		task.cucumber_opts = ["features"]
+		task.cucumber_opts = ['features']
 	end
 end
 
