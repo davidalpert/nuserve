@@ -63,6 +63,7 @@ end
 
 Given /^there are (\d+) packages in the server's folder$/ do | n |
 
+	puts "making '#{$bin_packages_root}'..."
 	rm_bin_packages
 	FileUtils.mkdir_p $bin_packages_root
 
