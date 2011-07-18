@@ -16,21 +16,21 @@ include FileUtils
 # include our custom albacore tasks (if any)
 FileList["./Tools/albacore/**/*.rb"].each { |f| require f }
 
-source_root     = "./src"
-test_root       = "./test"
-lib_root        = "./packages"
+source_root      = "./src"
+test_root        = "./test"
+lib_root         = "./packages"
 $packages_root   = "./packages"
-tools_root      = "./tools"
+tools_root       = "./tools"
 
-build_root      = "./build" # used as a pre-deployment staging folder
-temp_build_root = "./temp" # used for integration testing
+build_root       = "./build" # used as a pre-deployment staging folder
+temp_build_root  = "./temp" # used for integration testing
 
-solution_file   = FileList["./**/*.sln"].first
-commit          = Git.open(".").log.first.sha[0..10] rescue 'na'
-version         = "0.0.1"
-msbuild_exe     = File.join(ENV['windir'], 'Microsoft.NET','Framework',  'v4.0.30319', 'MSBuild.exe')
+solution_file    = FileList["./**/*.sln"].first
+commit           = Git.open(".").log.first.sha[0..10] rescue 'na'
+version          = "0.0.1"
+msbuild_exe      = File.join(ENV['windir'], 'Microsoft.NET','Framework',  'v4.0.30319', 'MSBuild.exe')
 
-CLEAN.include("#{source_root}/**/bin", "#{source_root}/**/obj", "#{test_root}/**/obj", "#{test_root}/**/bin")
+CLEAN.include("#{source_root}/**/bin", "#{source_root}/**/obj", "#{test_root}/**/obj", "#{test_root}/**/bin", build_root, temp_build_root)
 
 CLOBBER.include("./**/_*", "./**/*.user", "./**/*.cache", "./**/*.suo", "TestResult.xml", "#{$packages_root}")
 
