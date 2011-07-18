@@ -231,6 +231,7 @@ namespace :test do
 		rm_rf temp_build_root
 		mkdir_p temp_build_root
 		FileList["#{source_root}/nuserve/bin/#{configuration}/*.*"].each do |f|
+			puts "- #{f}"
 			cp f,temp_build_root
 		end
 	end
