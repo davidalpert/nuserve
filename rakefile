@@ -205,10 +205,10 @@ namespace :test do
 
 	desc 'Verify features'
 	task :features, [:config] do | task, args | 
-		#Rake::Task["test:deploy"].invoke(args)
+		Rake::Task["test:deploy"].invoke(args.config)
 		
 		put_banner "verifying: features"
-		Rake::Task["test:run_features"].invoke(args)
+		Rake::Task["test:run_features"].invoke(args.config)
 	end
 
 	Cucumber::Rake::Task.new(:run_features) do |task|
@@ -217,14 +217,15 @@ namespace :test do
 	end
 
 	task :deploy, [:config] do |task, args|
-		Rake::Task["build:all"].invoke(args[:config])
+
+		Rake::Task["build:all"].invoke(args.config)
 
 		put_banner "deploying to #{temp_build_root}"
 
 		# resolve config
 		configuration = :Debug
 		if args[:config] != nil && args[:config] != 'local' then
-			configuration = args[:config]
+			configuration = args[:config] 
 		end
 
 		rm_rf temp_build_root
