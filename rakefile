@@ -19,7 +19,7 @@ FileList["./Tools/albacore/**/*.rb"].each { |f| require f }
 source_root     = "./src"
 test_root       = "./test"
 lib_root        = "./packages"
-packages_root   = "./packages"
+$packages_root   = "./packages"
 tools_root      = "./tools"
 
 build_root      = "./build" # used as a pre-deployment staging folder
@@ -30,19 +30,9 @@ commit          = Git.open(".").log.first.sha[0..10] rescue 'na'
 version         = "0.0.1"
 msbuild_exe     = File.join(ENV['windir'], 'Microsoft.NET','Framework',  'v4.0.30319', 'MSBuild.exe')
 
-Albacore.configure do |config|
-	def package_tool(package, tool)
-		File.join(Dir.glob(File.join("./packages","#{package}.*")).sort.last, "tools", tool)
-	end
-
-	config.log_level = :verbose
-
-	config.mspec.command = package_tool("Machine.Specifications", "mspec-x86-clr4.exe")
-end
-
 CLEAN.include("#{source_root}/**/bin", "#{source_root}/**/obj", "#{test_root}/**/obj", "#{test_root}/**/bin")
 
-CLOBBER.include("./**/_*", "./**/*.user", "./**/*.cache", "./**/*.suo", "TestResult.xml", "#{packages_root}")
+CLOBBER.include("./**/_*", "./**/*.user", "./**/*.cache", "./**/*.suo", "TestResult.xml", "#{$packages_root}")
 
 # ---------------------------------------------------------------------------------------------------------
 # and so begin the build script tasks/targets
@@ -55,6 +45,20 @@ task :default => ["clean", "build:all", "test:all"]
 desc 'Setup requirements to build and deploy'
 task :setup => ["setup:dep"]
 
+def setup_os(target = nil, folders_to_setup = nil)
+	target ||= File.exist?('c:\Program Files (x86)') ? 64 : 32
+	abort "no folders to set up!" if folders_to_setup.nil?
+	puts "**** Setting up OS #{target} bits"
+	folders_to_setup.each { |folder_path| 
+		pattern = "#{folder_path}/{x,}#{target}/*.*"
+		#puts "**** looking in: #{pattern}"
+		files = FileList["#{pattern}"].each { |f|
+			puts "**** Using #{f}"
+			FileUtils.cp(f, folder_path)
+		}
+	}
+end
+
 namespace :setup do
 
 	task :dep => ["setup:dep:packages", "setup:dep:os"]
@@ -64,17 +68,32 @@ namespace :setup do
 		desc "Setup dependencies for nuget packages"
 		task :packages do
 			FileList["**/packages.config"].each do |file|
-				sh "nuget install #{file} /OutputDirectory #{packages_root}"
+				sh "nuget install #{file} /OutputDirectory #{$packages_root}"
 			end
 		end
 	
 		desc "Setup dependencies for this OS (x86/x64)"
 		task :os do
 			folders = []
-			`find #{packages_root} -name 'binaries'`.each_line {|f| folders.push f.strip}
+			`find #{$packages_root} -name 'binaries'`.each_line {|f| folders.push f.strip}
 			setup_os(nil,folders) 
 		end
 	end
+end
+
+Albacore.configure do |config|
+
+	Rake::Task["setup"].invoke unless File.exists? $packages_root
+
+	def package_tool(package, tool)
+		package_folder_root = File.join($packages_root,"#{package}.*")
+		target_folder = Dir.glob(package_folder_root).sort.last
+		File.join(target_folder, "tools", tool) rescue puts "cannot find #{target_folder}; run 'rake setup' to ensure all dependencies are satisfied."
+	end
+
+	config.log_level = :verbose
+
+	config.mspec.command = package_tool("Machine.Specifications", "mspec-x86-clr4.exe") 
 end
 
 # ---------------------------------------------
@@ -262,19 +281,4 @@ end
 def windows_path_with_trailing_slash_for(bash_path)
   "#{bash_path}//".gsub('/', '\\')
 end
-
-def setup_os(target = nil, folders_to_setup = nil)
-	target ||= File.exist?('c:\Program Files (x86)') ? 64 : 32
-	abort "no folders to set up!" if folders_to_setup.nil?
-	puts "**** Setting up OS #{target} bits"
-	folders_to_setup.each { |folder_path| 
-		pattern = "#{folder_path}/{x,}#{target}/*.*"
-		#puts "**** looking in: #{pattern}"
-		files = FileList["#{pattern}"].each { |f|
-			puts "**** Using #{f}"
-			FileUtils.cp(f, folder_path)
-		}
-	}
-end
-
 
