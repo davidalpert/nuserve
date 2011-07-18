@@ -1,7 +1,9 @@
 require 'rubygems'    
+
+Gem::Specification::find_by_name('bundler') or raise "bundler is required to help manage dependencies - run 'gem install bundler'"
 require 'bundler'
 
-system "bundle install --system"
+system "bundle install --system" unless `bundle check`.match(/The Gemfile's dependencies are satisfied/)
 
 require 'albacore'
 require 'rake/clean'
