@@ -50,6 +50,8 @@ namespace :install do
 	task :simple do
 		put_banner "installing nuserve from #{build_root}"
 		system "#{nuserve_exe} install"
+
+		Rake::Task["start"].invoke
 	end
 	
 	task :new => ["default", "install:simple"]
