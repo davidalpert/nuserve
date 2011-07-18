@@ -208,7 +208,8 @@ namespace :test do
 	task :features, [:config] do | task, args | 
 		Rake::Task["test:deploy"].invoke(args.config)
 		
-		put_banner "verifying: features"
+		put_banner "verifying features in #{temp_build_root}"
+
 		Rake::Task["test:run_features"].invoke(args.config)
 	end
 

@@ -132,7 +132,7 @@
     <Content Include="Views\staticview.html" />
     <Content Include="app.config">
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Include="log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
