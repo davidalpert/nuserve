@@ -26,11 +26,6 @@ result = :nil
 
 Given /^nuserve is running$/ do
 
-	nuserve_exe_config = "#{nuserve_exe}.config"
-
-	config = DotNetConfigFileInfo.new(nuserve_exe_config)
-	config.set_unique_appSetting!('ApiSettings.ApiKey', 'secretKey')
-
 	pipe = IO.popen(nuserve_exe)
 	puts "waiting for nuserve to start..."
 	(1..nuserve_startup_timeout_in_seconds).each do 
@@ -39,6 +34,19 @@ Given /^nuserve is running$/ do
 	end
 	puts "... assuming that nuserve has started\n\n"
 	puts "[#{pipe.pid}] #{nuserve_exe}"
+end
+
+Given /^nuserve is running with an ApiKey$/ do
+
+	nuserve_exe_config = "#{nuserve_exe}.config"
+	key = 'secretKey'
+
+	puts "updating #{nuserve_exe_config} to use '#{key}' as an ApiKey"
+
+	config = DotNetConfigFileInfo.new(nuserve_exe_config)
+	config.set_unique_appSetting!('ApiSettings.ApiKey', key)
+
+	Given 'nuserve is running'
 end
 
 Given /^there are (\d+) packages in the server's folder$/ do | n |
