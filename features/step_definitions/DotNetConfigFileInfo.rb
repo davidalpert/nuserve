@@ -8,9 +8,8 @@ class DotNetConfigFileInfo
 	attr_accessor :file_path, :config_root
 	@app_settings
 
-	def initialize
-		@file_path = :nil
-		@config_root = :nil
+	def initialize(file_path = nil)
+		self.load(file_path)
 	end
 
 	def to_s
@@ -18,6 +17,10 @@ class DotNetConfigFileInfo
 	end
 
 	def load(file_path)
+		raise "cannot load a null file_path" if file_path.nil?
+
+		@file_path = file_path
+
 		File.open(file_path) do | config_file |
 			@config_root = Document.new(config_file)
 		end
@@ -25,7 +28,10 @@ class DotNetConfigFileInfo
 		ensure_appSettings_node
 	end
 
-	def save(file_path)
+	def save(file_path = nil)
+		file_path = @file_path if file_path.nil?
+		raise "cannot save to a null file_path" if file_path.nil?
+
 		File.open(file_path, "w+") do | result | 
 			formatter = REXML::Formatters::Default.new
 			formatter.write(@config_root, result) rescue puts "error while writing config file"
@@ -33,9 +39,14 @@ class DotNetConfigFileInfo
 	end
 
 	def set_unique_appSetting(key, val)
-		#<add key="ApiSettings.ApiKey" value="nuget"/>
+		#e.g. <add key="ApiSettings.ApiKey" value="nuget"/>
 		@app_settings.delete_element("add[@key='#{key}']")
 		@app_settings.add_element('add', {'key' => key, 'value' => val })
+	end
+
+	def set_unique_appSetting!(key, val)
+		set_unique_appSetting(key,val)
+		save
 	end
 
 	private 

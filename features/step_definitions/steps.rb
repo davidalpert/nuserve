@@ -28,10 +28,8 @@ Given /^nuserve is running$/ do
 
 	nuserve_exe_config = "#{nuserve_exe}.config"
 
-	config = DotNetConfigFileInfo.new
-	config.load(nuserve_exe_config)
-	config.set_unique_appSetting('ApiSettings.ApiKey', 'secretKey')
-	config.save(nuserve_exe_config)
+	config = DotNetConfigFileInfo.new(nuserve_exe_config)
+	config.set_unique_appSetting!('ApiSettings.ApiKey', 'secretKey')
 
 	pipe = IO.popen(nuserve_exe)
 	puts "waiting for nuserve to start..."
