@@ -37,6 +37,7 @@ _ReSharper*/
 
 #Project files
 [Bb]uild/
+[Tt]emp
 
 #Subversion files
 .svn
@@ -60,5 +61,6 @@ Gemfile.lock
 #vim swap file
 *.swp
 
-#temp files
-temp
+#aptana
+.project
+
