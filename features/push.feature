@@ -7,3 +7,10 @@ Feature: Pushing a package to the server and optionally publishing it
 		  And I request a list of packages
 		 Then I should see 1 package
 
+	@wip
+	Scenario: Push a new package without any ApiKey
+		Given nuserve is running with no ApiKey
+		  And there are 0 packages in the server's folder
+		 When I push 1 package
+		  And I request a list of packages
+		 Then I should see 0 package

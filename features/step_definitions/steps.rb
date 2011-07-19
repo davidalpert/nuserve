@@ -49,6 +49,19 @@ Given /^nuserve is running with an ApiKey$/ do
 	Given 'nuserve is running'
 end
 
+Given /^nuserve is running with no ApiKey$/ do
+
+	nuserve_exe_config = "#{nuserve_exe}.config"
+	key = 'secretKey'
+
+	puts "updating #{nuserve_exe_config} to use no ApiKey"
+
+	config = DotNetConfigFileInfo.new(nuserve_exe_config)
+	config.remove_appSetting!('ApiSettings.ApiKey')
+
+	Given 'nuserve is running'
+end
+
 Given /^there are (\d+) packages in the server's folder$/ do | n |
 
 	puts "making '#{$bin_packages_root}'..."

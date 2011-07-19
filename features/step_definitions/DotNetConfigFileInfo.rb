@@ -38,14 +38,32 @@ class DotNetConfigFileInfo
 		end
 	end
 
+	def add_appSetting(key, val)
+		@app_settings.add_element('add', {'key' => key, 'value' => val })
+	end
+
+	def add_appSetting!(key, val)
+		add_appSetting(key, val)
+		save
+	end
+
 	def set_unique_appSetting(key, val)
 		#e.g. <add key="ApiSettings.ApiKey" value="nuget"/>
-		@app_settings.delete_element("add[@key='#{key}']")
-		@app_settings.add_element('add', {'key' => key, 'value' => val })
+		remove_appSetting(key)
+		add_appSetting(key, val)
 	end
 
 	def set_unique_appSetting!(key, val)
 		set_unique_appSetting(key,val)
+		save
+	end
+
+	def remove_appSetting(key)
+		@app_settings.delete_element("add[@key='#{key}']")
+	end
+
+	def remove_appSetting!(key)
+		remove_appSetting(key)
 		save
 	end
 

@@ -230,17 +230,21 @@ namespace :test do
 	end
 
 	desc 'Verify features'
-	task :features, [:config] do | task, args | 
+	task :features, [:config, :tag] do | task, args | 
 		Rake::Task["test:deploy"].invoke(args.config)
 		
-		put_banner "verifying features in #{temp_build_root}"
+		put_banner "verifying features in #{temp_build_root}" if args.tag.nil?
+		put_banner "verifying #{args.tag} features in #{temp_build_root}" unless args.tag.nil?
 
 		Rake::Task["test:run_features"].invoke(args.config)
 	end
 
 	Cucumber::Rake::Task.new(:run_features) do |task|
-
 		task.cucumber_opts = ['features']
+	end
+
+	Cucumber::Rake::Task.new(:run_wip_features) do |task|
+		task.cucumber_opts = ['-t', '@wip', 'features']
 	end
 
 	task :deploy, [:config] do |task, args|
