@@ -6,6 +6,7 @@ require 'bundler'
 system "bundle install --system" unless `bundle check`.match(/The Gemfile's dependencies are satisfied/)
 
 require 'albacore'
+require 'git'
 require 'rake/clean'
 require 'xmlsimple' # might use this later - to manipulate config files?
 require 'zip/zip'
@@ -29,7 +30,8 @@ nuserve_exe      = "#{build_root}/nuserve.exe"
 
 solution_file    = FileList["./**/*.sln"].first
 commit           = Git.open(".").log.first.sha[0..10] rescue 'na'
-version          = "0.0.1"
+version          = "0.2.0"
+assembly_info    = File.join(source_root, 'nuserve', 'Properties', 'AssemblyInfo.cs')
 msbuild_exe      = File.join(ENV['windir'], 'Microsoft.NET','Framework',  'v4.0.30319', 'MSBuild.exe')
 
 CLEAN.include("#{source_root}/**/bin", "#{source_root}/**/obj", "#{test_root}/**/obj", "#{test_root}/**/bin", build_root, temp_build_root)
@@ -40,7 +42,7 @@ CLOBBER.include("./**/_*", "./**/*.user", "./**/*.cache", "./**/*.suo", "TestRes
 # and so begin the build script tasks/targets
 
 desc 'Default: clean and (re)build the solution'
-task :default => ["clean", "build:all", "test:all", "build:deploy"]
+task :default => ["clean", "assemblyinfo", "build:all", "test:all", "build:deploy"]
 
 # ---------------------------------------------
 
@@ -130,6 +132,19 @@ end
 
 # ---------------------------------------------
 
+desc "update assembly info"
+assemblyinfo :assemblyinfo do |asm|
+	asm.version = version
+	asm.company_name = "David Alpert"
+	asm.product_name = "nuserve - #{commit}"
+	asm.title = "nuserve"
+	asm.description = "Hosts the nuget.server functionality as a self-hosted process outside of IIS."
+	asm.copyright = "copyright some year, by some legal entity"
+	asm.output_file = assembly_info
+end
+
+# ---------------------------------------------
+
 desc "Build the project"
 task :build => ["build:all"]
 
@@ -169,7 +184,6 @@ namespace :build do
 		end
 	end
 end
-
 
 # ---------------------------------------------
 

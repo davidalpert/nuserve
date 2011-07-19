@@ -1,5 +1,6 @@
 source :rubygems
 
+gem 'git'
 gem 'albacore'
 gem 'xml-simple'
 gem 'cucumber'
