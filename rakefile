@@ -113,15 +113,15 @@ namespace :setup do
 	end
 end
 
-Albacore.configure do |config|
-
-	Rake::Task["setup"].invoke unless File.exists? $packages_root
-
 	def package_tool(package, tool)
 		package_folder_root = File.join($packages_root,"#{package}.*")
 		target_folder = Dir.glob(package_folder_root).sort.last
 		File.join(target_folder, "tools", tool) rescue puts "cannot find #{target_folder}; run 'rake setup' to ensure all dependencies are satisfied."
 	end
+
+Albacore.configure do |config|
+
+	Rake::Task["setup"].invoke unless File.exists? $packages_root
 
 	config.log_level = :verbose
 
@@ -170,13 +170,6 @@ namespace :build do
 	end
 end
 
-def put_banner(text)
-	puts
-	puts "-------------------------------------------------------------"
-	puts text
-	puts "-------------------------------------------------------------"
-	puts
-end
 
 # ---------------------------------------------
 
@@ -289,6 +282,14 @@ end
 
 # ---------------------------------------------
 
+def put_banner(text)
+	puts
+	puts "-------------------------------------------------------------"
+	puts text
+	puts "-------------------------------------------------------------"
+	puts
+end
+
 def resolve_profile(profileName)
 	profile = $deployment_profiles["#{profileName}"]
 
@@ -299,22 +300,20 @@ def resolve_profile(profileName)
 		profileName = 'local'
 		profile = $deployment_profiles["#{profileName}"]
 	end
-	
-	profile.merge!( :name => profileName )
 
+	profile.merge!( :name => profileName )
 	return profile
 end
 
 def svn_version
-    version_range = `./tools/svn/svnversion`.match('(\d+)(?::(\d+))?') rescue [-1]
-    version_range[2] || version_range[1] || ENV["BUILD_VCS_NUMBER"]
+	version_range = `./tools/svn/svnversion`.match('(\d+)(?::(\d+))?') rescue [-1]
+	version_range[2] || version_range[1] || ENV["BUILD_VCS_NUMBER"]
 end
 
 def windows_path_for(bash_path)
-  "#{bash_path}".gsub('/', '\\')
+	"#{bash_path}".gsub('/', '\\')
 end
 
 def windows_path_with_trailing_slash_for(bash_path)
-  "#{bash_path}//".gsub('/', '\\')
+	"#{bash_path}//".gsub('/', '\\')
 end
-
