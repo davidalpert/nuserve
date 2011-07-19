@@ -1,12 +1,11 @@
 
-require 'test/unit/assertions'
 require 'Win32/Process'
-require 'rexml/document'
+require File.join(File.expand_path(File.dirname(__FILE__)), 'DotNetConfigFileInfo.rb')
 
+require 'test/unit/assertions'
 World(Test::Unit::Assertions) # not sure why this is needed?
 
 include FileUtils
-include REXML
 
 def package_tool(package, tool)
 	File.join(Dir.glob(File.join("./packages","#{package}.*")).sort.last, "tools", tool)
@@ -28,28 +27,11 @@ result = :nil
 Given /^nuserve is running$/ do
 
 	nuserve_exe_config = "#{nuserve_exe}.config"
-	
-	config = :nil
 
-	File.open(nuserve_exe_config) do | config_file |
-		config = Document.new(config_file)
-	end
-
-	appSettings = config.root.elements['appSettings']
-
-	if appSettings.nil?
-		config.root.elements << Element.new('appSettings')
-		appSettings = config.root.elements['appSettings']
-	end
-
-	#<add key="ApiSettings.ApiKey" value="nuget"/>
-	appSettings.delete_element("add[@key='ApiSettings.ApiKey']")
-	appSettings.add_element('add', {'key' => 'ApiSettings.ApiKey', 'value' => api_key })
-
-	File.open(nuserve_exe_config, "w+") do | result | 
-		formatter = REXML::Formatters::Default.new
-		formatter.write(config, result) rescue puts "error while writing config file"
-	end
+	config = DotNetConfigFileInfo.new
+	config.load(nuserve_exe_config)
+	config.set_unique_appSetting('ApiSettings.ApiKey', 'secretKey')
+	config.save(nuserve_exe_config)
 
 	pipe = IO.popen(nuserve_exe)
 	puts "waiting for nuserve to start..."
