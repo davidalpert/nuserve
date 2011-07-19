@@ -17,6 +17,7 @@ project_root = '.'
 project_packages_root = File.join(project_root, 'packages')
 bin_root = File.join(project_root, 'temp')
 nuserve_exe = File.expand_path(File.join(bin_root, 'nuserve.exe'))
+$nuserve_exe_config = "#{nuserve_exe}.config"
 $bin_packages_root = File.expand_path(File.join(bin_root, 'packages'))
 nuget_exe = package_tool('NuGet.CommandLine', 'nuget.exe')
 project_nupkg_files = Dir.glob("#{project_packages_root}/**/*.nupkg")
@@ -24,8 +25,36 @@ project_nupkg_files = Dir.glob("#{project_packages_root}/**/*.nupkg")
 pipe = :nil
 result = :nil
 
-Given /^nuserve is running$/ do
+def update_config_set(key, val)
+	puts "updating #{$nuserve_exe_config}:"
+	puts "- <add key=\"#{key}\" value=\"#{val}\" />"
 
+	config = DotNetConfigFileInfo.new($nuserve_exe_config)
+	config.set_unique_appSetting!(key, val)
+end
+
+Given /^nuserve is configured to manage packages at '(.+?)'$/ do |manage_packages_uri|
+	update_config_set('EndpointSettings.PackageManagerUri', manage_packages_uri)
+end
+
+Given /^nuserve is configured to list packages at '(.+?)'$/ do |list_packages_uri|
+	update_config_set('EndpointSettings.PackageListUri', list_packages_uri)
+end
+
+Given /^nuserve is configured to use '(.*?)' as an ApiKey$/ do | key |
+	update_config_set('ApiSettings.ApiKey', key)
+end
+
+Given /^nuserve is running with an ApiKey$/ do
+	Given "nuserve is running with an ApiKey of '#{api_key}'"
+end
+
+Given /^nuserve is running with an ApiKey of '(.*?)'$/ do | key |
+	Given "nuserve is configured to use '#{key}' as an ApiKey"
+	Given "nuserve is running"
+end
+
+Given /^nuserve is running$/ do
 	pipe = IO.popen(nuserve_exe)
 	puts "waiting for nuserve to start..."
 	(1..nuserve_startup_timeout_in_seconds).each do 
@@ -36,27 +65,11 @@ Given /^nuserve is running$/ do
 	puts "[#{pipe.pid}] #{nuserve_exe}"
 end
 
-Given /^nuserve is running with an ApiKey$/ do
-
-	nuserve_exe_config = "#{nuserve_exe}.config"
-	key = 'secretKey'
-
-	puts "updating #{nuserve_exe_config} to use '#{key}' as an ApiKey"
-
-	config = DotNetConfigFileInfo.new(nuserve_exe_config)
-	config.set_unique_appSetting!('ApiSettings.ApiKey', key)
-
-	Given 'nuserve is running'
-end
-
 Given /^nuserve is running with no ApiKey$/ do
 
-	nuserve_exe_config = "#{nuserve_exe}.config"
-	key = 'secretKey'
+	puts "updating #{$nuserve_exe_config} to use no ApiKey"
 
-	puts "updating #{nuserve_exe_config} to use no ApiKey"
-
-	config = DotNetConfigFileInfo.new(nuserve_exe_config)
+	config = DotNetConfigFileInfo.new($nuserve_exe_config)
 	config.remove_appSetting!('ApiSettings.ApiKey')
 
 	Given 'nuserve is running'
@@ -81,21 +94,28 @@ Given /^there are (\d+) packages in the server's folder$/ do | n |
 end
 
 When /^I request a list of packages$/ do
-	cmd = "#{nuget_exe} list -s http://localhost:5656/packages"
+	When "I request a list of packages from 'http://localhost:5656/packages'"
+end
+
+When /^I request a list of packages from '(.*?)'$/ do | source |
+	cmd = "#{nuget_exe} list -s #{source}"
 	puts "\$ #{cmd}"
 	result = `#{cmd}`
 	puts result
 end
 
-When /^I push (\d+) packages?$/ do | n |
+When /^I push (\d+) package(s)?$/ do | n, plural |
+	When "I push #{n} package#{plural} to 'http://localhost:5656' using an ApiKey of '#{api_key}'"
+end
 
+When /^I push (\d+) packages? to '(.*?)' using an ApiKey of '(.*?)'$/ do |n, source, key|
 	packages_count = project_nupkg_files.length
 
 	puts "found #{packages_count} packages in #{project_packages_root}"
 	(packages_count >= n.to_i) or raise "Could not find #{n} packages."
 
 	project_nupkg_files.first(n.to_i).each do |f|
-		cmd = "#{nuget_exe} push #{f} #{api_key} -s http://localhost:5656"
+		cmd = "#{nuget_exe} push #{f} #{key} -s #{source}"
 		puts "\$ #{cmd}"
 		result = `#{cmd}`
 		puts result
