@@ -3,7 +3,7 @@ require 'Win32/Process'
 require File.join(File.expand_path(File.dirname(__FILE__)), 'DotNetConfigFileInfo.rb')
 
 require 'test/unit/assertions'
-World(Test::Unit::Assertions) # not sure why this is needed?
+include Test::Unit::Assertions
 
 include FileUtils
 
