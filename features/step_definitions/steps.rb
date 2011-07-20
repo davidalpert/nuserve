@@ -19,6 +19,7 @@ bin_root = File.join(project_root, 'temp')
 nuserve_exe = File.expand_path(File.join(bin_root, 'nuserve.exe'))
 $nuserve_exe_config = "#{nuserve_exe}.config"
 $bin_packages_root = File.expand_path(File.join(bin_root, 'packages'))
+temp_packages_root = './temp_packages'
 nuget_exe = package_tool('NuGet.CommandLine', 'nuget.exe')
 project_nupkg_files = Dir.glob("#{project_packages_root}/**/*.nupkg")
 
@@ -78,7 +79,7 @@ end
 Given /^there are (\d+) packages in the server's folder$/ do | n |
 
 	puts "making '#{$bin_packages_root}'..."
-	rm_bin_packages
+	rm_rf $bin_packages_root
 	FileUtils.mkdir_p $bin_packages_root
 
 	packages_count = project_nupkg_files.length
@@ -122,11 +123,39 @@ When /^I push (\d+) packages? to '(.*?)' using an ApiKey of '(.*?)'$/ do |n, sou
 	end
 end
 
+When /^I install a package locally$/ do
+	When "I install a package from 'http://localhost:5656/packages/' into '#{temp_packages_root}'"
+end
+
+When /^I install a package from '(.*?)' into '(.*?)'$/ do | src, dest | 
+	full_package_name = project_nupkg_files.first
+	match = full_package_name.match(/^.*\/([a-zA-Z]+(\.[a-zA-Z]+)*)\.(\d+\.)+nupkg/i)
+	package_id = $1
+
+	rm_rf temp_packages_root
+
+	cmd = "#{nuget_exe} install #{package_id} -s #{src} -OutputDirectory #{dest}"
+	puts "\$ #{cmd}"
+	result = `#{cmd}`
+	puts result
+
+	assert_match(/Successfully installed '[a-zA-Z]+(\.[a-zA-Z])* (\d+\.?)+/i, result)
+end
+
+Then /^I should have (\d+) packages? installed$/ do |n|
+	Then "I should have #{n} packages installed in '#{temp_packages_root}'"
+end
+
+Then /^I should have (\d+) packages? installed in '(.*?)'$/ do |n, dest|
+	installed_package_folders = Dir[File.join(dest, '*')].map { |a| File.basename(a) }
+	assert_equal n.to_i, installed_package_folders.length
+end
+
 Then /^I should see (\d+) packages?$/ do | n |
 	package_count = 0
 
 	result.each_line do |line|
-		package_count += 1 if line.match(/^(\w|\.)+\s+[0-9.]+/)
+		package_count += 1 if line =~ /^(\w|\.)+\s+[0-9.]+/
 	end
 
 	assert_equal(package_count, n.to_i, "not the right number of packages")
@@ -140,13 +169,8 @@ Before do
 end
 
 After do
-	rm_bin_packages
+	rm_rf $bin_packages_root
 	Process.kill( 'KILL', pipe.pid ) unless pipe.nil?
 	pipe.close unless pipe.nil?
-end
-
-def rm_bin_packages()
-	# clean the packages root
-	rm_rf $bin_packages_root
 end
 
