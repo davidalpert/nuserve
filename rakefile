@@ -6,7 +6,7 @@ require 'bundler'
 system "bundle install --system" unless `bundle check`.match(/The Gemfile's dependencies are satisfied/)
 
 require 'albacore'
-require 'git'
+require 'git' rescue 'na'
 require 'rake/clean'
 require 'xmlsimple' # might use this later - to manipulate config files?
 require 'zip/zip'
