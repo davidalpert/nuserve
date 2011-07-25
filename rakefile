@@ -34,6 +34,9 @@ version          = "0.2.0"
 assembly_info    = File.join(source_root, 'nuserve', 'Properties', 'AssemblyInfo.cs')
 msbuild_exe      = File.join(ENV['windir'], 'Microsoft.NET','Framework',  'v4.0.30319', 'MSBuild.exe')
 
+nuserve_zip      = "nuserve-#{version}-#{commit}.zip"
+nuserve_zip_root = "./"
+
 CLEAN.include("#{source_root}/**/bin", "#{source_root}/**/obj", "#{test_root}/**/obj", "#{test_root}/**/bin", build_root, temp_build_root)
 
 CLOBBER.include("./**/_*", "./**/*.user", "./**/*.cache", "./**/*.suo", "TestResult.xml", "#{$packages_root}")
@@ -182,6 +185,14 @@ namespace :build do
 			puts "- #{f}"
 			cp f,build_root
 		end
+	end
+
+	zip :zip => ["build:deploy"] do |zip|
+	    put_banner "zipping to #{nuserve_zip_root}#{nuserve_zip}"
+
+	    zip.directories_to_zip = [build_root]
+	    zip.output_file = nuserve_zip
+	    zip.output_path = nuserve_zip_root
 	end
 end
 
