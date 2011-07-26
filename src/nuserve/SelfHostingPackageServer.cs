@@ -81,7 +81,7 @@ namespace nuserve
 
             serviceHost.Open();
 
-            log.InfoFormat("Packages OData feed now listenting at: {0}", packages_odata_uri);
+            log.InfoFormat("Packages OData feed now listening at: {0}", packages_odata_uri);
         }
 
         private void stop_OData_package_service()
