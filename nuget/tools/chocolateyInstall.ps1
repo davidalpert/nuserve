@@ -12,9 +12,10 @@ try {
   $nuservePath = "$env:SystemDrive\tools\nuserve"
   Install-ChocolateyZipPackage 'nuserve' 'https://github.com/downloads/davidalpert/nuserve/nuserve-0.3.0-d776d7aa017.zip' "$nuservePath"
 
-  # temp fix for 0.3.0
   $nuservePackages = Join-Path $nuservePath "packages"
   if (![System.IO.Directory]::Exists($nuservePackages)) {[System.IO.Directory]::CreateDirectory($nuservePackages)}
+  $nuserveLogs = Join-Path $nuservePath "logs"
+  if (![System.IO.Directory]::Exists($nuserveLogs)) {[System.IO.Directory]::CreateDirectory($nuserveLogs)}
   
   #------- ADDITIONAL SETUP -------#
   write-host "Installing NuServe"
