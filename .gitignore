@@ -55,6 +55,7 @@ Gemfile.lock
 #nuget packages
 [Pp]ackages
 [Tt]emp_[Pp]ackages
+*.nupkg
 
 #mightymoose cache
 *_mm_cache.bin
