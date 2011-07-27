@@ -4,9 +4,10 @@ using log4net;
 using Machine.Specifications;
 using NSubstitute;
 using NuGet.Commands;
-using nuserve;
-using nuserve.Settings;
 using NuGet.Common;
+using nuserve.Infrastructure;
+using nuserve.Infrastructure.Implementation;
+using nuserve.Settings;
 
 namespace nuserve.integration.specs
 {

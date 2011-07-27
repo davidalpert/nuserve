@@ -3,6 +3,7 @@ using developwithpassion.specifications.nsubstitue;
 using Machine.Specifications;
 using Should;
 using nuserve.Infrastructure;
+using nuserve.Infrastructure.Implementation;
 using nuserve.Settings;
 
 namespace nuserve.specs
