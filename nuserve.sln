@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nuserve.integration.specs",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nuserve.specs", "test\nuserve.specs\nuserve.specs.csproj", "{74710694-6D91-468F-BE11-B70B6394FD4F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "specs", "specs", "{089D8C71-8EEB-4634-A908-6F11165A9BD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Coverage|Any CPU = Coverage|Any CPU
@@ -91,5 +93,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{74710694-6D91-468F-BE11-B70B6394FD4F} = {089D8C71-8EEB-4634-A908-6F11165A9BD3}
+		{6AA8E365-DF52-4E8D-ADBA-3F62E2B2FDA8} = {089D8C71-8EEB-4634-A908-6F11165A9BD3}
 	EndGlobalSection
 EndGlobal
