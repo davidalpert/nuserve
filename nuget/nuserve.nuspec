@@ -15,7 +15,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <iconUrl>https://github.com/ferventcoder/nugetpackages/raw/master/nuserve/nuserve.gif</iconUrl>-->
     <dependencies>
-      <dependency id="chocolatey" version="0.9.8.4" />
+      <dependency id="chocolatey" version="0.9.8.5" />
     </dependencies>
   </metadata>
 </package>
