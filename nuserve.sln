@@ -15,6 +15,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nuserve.specs", "test\nuser
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "specs", "specs", "{089D8C71-8EEB-4634-A908-6F11165A9BD3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{032F862A-2892-4CBA-ACCA-BBE8F773613A}"
+	ProjectSection(SolutionItems) = preProject
+		nuget\nuserve.nuspec = nuget\nuserve.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{1FB32024-5FD9-46CD-A6A4-34CF7BE7C910}"
+	ProjectSection(SolutionItems) = preProject
+		nuget\content\nuserve.ReadMe.txt = nuget\content\nuserve.ReadMe.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{A3A4E4C9-D3C4-40AE-8CBD-44A0A9DB86F7}"
+	ProjectSection(SolutionItems) = preProject
+		nuget\tools\chocolateyInstall.ps1 = nuget\tools\chocolateyInstall.ps1
+		nuget\tools\install.ps1 = nuget\tools\install.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Coverage|Any CPU = Coverage|Any CPU
@@ -95,7 +111,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{032F862A-2892-4CBA-ACCA-BBE8F773613A} = {B0CD4D9F-3358-42B0-BD39-0B5585BE243D}
 		{74710694-6D91-468F-BE11-B70B6394FD4F} = {089D8C71-8EEB-4634-A908-6F11165A9BD3}
 		{6AA8E365-DF52-4E8D-ADBA-3F62E2B2FDA8} = {089D8C71-8EEB-4634-A908-6F11165A9BD3}
+		{1FB32024-5FD9-46CD-A6A4-34CF7BE7C910} = {032F862A-2892-4CBA-ACCA-BBE8F773613A}
+		{A3A4E4C9-D3C4-40AE-8CBD-44A0A9DB86F7} = {032F862A-2892-4CBA-ACCA-BBE8F773613A}
 	EndGlobalSection
 EndGlobal
