@@ -2,6 +2,8 @@
 using System.IO;
 using log4net.Config;
 using Topshelf;
+using nuserve.Configuration;
+using nuserve.Infrastructure;
 
 namespace nuserve
 {
@@ -11,13 +13,13 @@ namespace nuserve
         {
             IoC.Bootstrap();
 
-            XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"log4net.config")));
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log4net.config")));
 
             Topshelf.HostFactory.Run(x =>
             {
                 x.Service<ISelfHostingPackageServer>(s =>
                 {
-                    s.ConstructUsing(name => IoC.Get<SelfHostingPackageServer>());
+                    s.ConstructUsing(name => IoC.Get<ISelfHostingPackageServer>());
                     s.WhenStarted(ns => ns.Start());
                     s.WhenPaused(ns => ns.Pause());
                     s.WhenContinued(ns => ns.Continue());
@@ -27,7 +29,7 @@ namespace nuserve
                 x.RunAsLocalSystem();
 
                 x.SetDisplayName("nuserve.exe");
-                x.SetDescription("a lightweight nuget server that can run as a windows service with no dependency on IIS");
+                x.SetDescription("A lightweight nuget server that can run as a windows service with no dependency on IIS");
                 x.SetServiceName("nuserve");
             });
         }

@@ -5,7 +5,7 @@ using Nancy.Hosting.Self;
 using NuGet.Server.DataServices;
 using nuserve.Settings;
 
-namespace nuserve
+namespace nuserve.Infrastructure.Implementation
 {
     /// <summary>
     /// Provides an implementation of the <see cref="ISelfHostingPackageServer"/>

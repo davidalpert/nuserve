@@ -1,7 +1,11 @@
 using System;
 
-namespace nuserve
+namespace nuserve.Infrastructure
 {
+    /// <summary>
+    /// The basic interface for a <see cref="SelfHostingPackageServer"/> used
+    /// by TopShelf to manage the self-hosting server.
+    /// </summary>
     public interface ISelfHostingPackageServer
     {
         void Start();

@@ -4,7 +4,7 @@ using System.Reflection;
 using NuGet.Server.Infrastructure;
 using nuserve.Settings;
 
-namespace nuserve.Infrastructure
+namespace nuserve.Infrastructure.Implementation
 {
     public class ServerPackageRepositoryFactory : IServerPackageRepositoryFactory
     {

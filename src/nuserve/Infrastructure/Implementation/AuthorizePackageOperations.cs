@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using nuserve.Settings;
 
-namespace nuserve.Infrastructure
+namespace nuserve.Infrastructure.Implementation
 {
     public class AuthorizePackageOperations : IAuthorizePackageOperations
     {

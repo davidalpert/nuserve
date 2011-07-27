@@ -1,8 +1,7 @@
 using System;
 using StructureMap;
-using nuserve.Configuration;
 
-namespace nuserve
+namespace nuserve.Configuration
 {
     /// <summary>
     /// Provides a static gateway to initialize our IoC container.
