@@ -111,11 +111,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\AppSettingProviderRegistry.cs" />
-    <Compile Include="Configuration\InMemoryStructureMapBindingContext.cs" />
+    <Compile Include="Configuration\FubuCore.StructureMap\AppSettingProviderRegistry.cs" />
     <Compile Include="Configuration\NugetServerRegistry.cs" />
     <Compile Include="Configuration\NuserveNancyBootstrapper.cs" />
-    <Compile Include="Configuration\SettingsScanner.cs" />
+    <Compile Include="Configuration\FubuCore.StructureMap\SettingsScanner.cs" />
     <Compile Include="Infrastructure\AuthorizePackageOperations.cs" />
     <Compile Include="Infrastructure\IAuthorizePackageOperations.cs" />
     <Compile Include="ISelfHostingPackageServer.cs" />

@@ -1,14 +1,21 @@
-﻿using FubuCore.Binding;
+﻿using Microsoft.Practices.ServiceLocation;
+using FubuCore.Binding;
 using FubuCore.Configuration;
 using FubuCore.Reflection;
 using StructureMap.Configuration.DSL;
-using Microsoft.Practices.ServiceLocation;
 using StructureMap.ServiceLocatorAdapter;
 
-namespace FubuMVC.StructureMap
+namespace FubuCore.StructureMap
 {
     /// <summary>
+    /// Borrowed from FubuMVC.StructureMap, these dependencies enable
+    /// the appSettings magic as facilitated by StructureMap. 
     /// </summary>
+    /// <remarks>
+    /// Though currently stored in the FubuMvc project, these bits depend 
+    /// only on FubuCore and not on any 'Mvc' bits.  Hence my namespace
+    /// change from FubuMvc to FubuCore.
+    /// </remarks>
     /// <remarks>https://github.com/DarthFubuMVC/fubumvc/blob/master/src/FubuMVC.StructureMap/AppSettingProviderRegistry.cs</remarks>
     public class AppSettingProviderRegistry : Registry
     {
