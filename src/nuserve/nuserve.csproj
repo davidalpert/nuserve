@@ -111,7 +111,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\DefaultImplementationConvention.cs" />
     <Compile Include="Configuration\FubuCore.StructureMap\AppSettingProviderRegistry.cs" />
+    <Compile Include="Infrastructure\Implementation\DefaultPathResolutionStrategy.cs" />
+    <Compile Include="Infrastructure\IPathResolutionStrategy.cs" />
     <Compile Include="Infrastructure\IServerPackageRepositoryFactory.cs" />
     <Compile Include="Configuration\NuserveRegistry.cs" />
     <Compile Include="Configuration\NuserveNancyBootstrapper.cs" />

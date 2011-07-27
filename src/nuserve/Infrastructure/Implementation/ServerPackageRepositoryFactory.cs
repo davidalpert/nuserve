@@ -9,13 +9,15 @@ namespace nuserve.Infrastructure.Implementation
     public class ServerPackageRepositoryFactory : IServerPackageRepositoryFactory
     {
         RepositorySettings settings;
+        IPathResolutionStrategy pathResolutionStrategy;
 
         /// <summary>
         /// Initializes a new instance of the ServerPackageRepositoryFactory class.
         /// </summary>
         /// <param name="settings"></param>
-        public ServerPackageRepositoryFactory(RepositorySettings settings)
+        public ServerPackageRepositoryFactory(RepositorySettings settings, IPathResolutionStrategy pathResolutionStrategy)
         {
+            this.pathResolutionStrategy = pathResolutionStrategy;
             this.settings = settings;
         }
 
@@ -26,19 +28,17 @@ namespace nuserve.Infrastructure.Implementation
             if (String.IsNullOrWhiteSpace(pathToRepo))
                 throw new InvalidOperationException("Cannot point nuserve's local repository at a null or empty path");
 
-            if (pathToRepo.StartsWith("~/"))
-            {
-                var exeRoot = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                PackageUtility.PackagePhysicalPath = Path.Combine(exeRoot, pathToRepo.TrimStart('~', '/'));
-            }
-            else
-            {
-                PackageUtility.PackagePhysicalPath = pathToRepo;
-            }
+            PackageUtility.PackagePhysicalPath = pathResolutionStrategy.ResolveToPhysicalPath(pathToRepo);
 
             bool directoryNotFound = Directory.Exists(PackageUtility.PackagePhysicalPath) == false;
-            if (directoryNotFound)
-                throw new InvalidOperationException(String.Format("'{0}' is not a valid path!", PackageUtility.PackagePhysicalPath));
+            try
+            {
+                Directory.CreateDirectory(PackageUtility.PackagePhysicalPath);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(String.Format("Could not create a part of '{0}'", PackageUtility.PackagePhysicalPath), ex);
+            }
 
             PackageUtility.ResolveAppRelativePathStrategy = s => Path.Combine(PackageUtility.PackagePhysicalPath, s.TrimStart('~', '/'));
 

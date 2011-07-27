@@ -23,6 +23,9 @@ namespace nuserve.Configuration
                 // wire up ISomething to Something
                 a.WithDefaultConventions();
 
+                // wire up ISomething to DefaultSomething
+                a.Convention<DefaultImplementationConvention>();
+
                 // build up Settings on demand
                 a.Convention<SettingsScanner>();
             });

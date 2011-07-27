@@ -42,6 +42,10 @@ Given /^nuserve is configured to list packages at '(.+?)'$/ do |list_packages_ur
 	update_config_set('EndpointSettings.PackageListUri', list_packages_uri)
 end
 
+Given /^nuserve is configured to serve packages from '(.*?)'$/ do | pathToRepo |
+	update_config_set('RepositorySettings.PathToServerPackageRepository', pathToRepo)
+end
+
 Given /^nuserve is configured to use '(.*?)' as an ApiKey$/ do | key |
 	update_config_set('ApiSettings.ApiKey', key)
 end
@@ -95,7 +99,7 @@ Given /^there are (\d+) packages in the server's folder$/ do | n |
 end
 
 When /^I request a list of packages$/ do
-	When "I request a list of packages from 'http://localhost:5656/packages'"
+	When "I request a list of packages from 'http://localhost:89/packages'"
 end
 
 When /^I request a list of packages from '(.*?)'$/ do | source |
@@ -106,7 +110,7 @@ When /^I request a list of packages from '(.*?)'$/ do | source |
 end
 
 When /^I push (\d+) package(s)?$/ do | n, plural |
-	When "I push #{n} package#{plural} to 'http://localhost:5656' using an ApiKey of '#{api_key}'"
+	When "I push #{n} package#{plural} to 'http://localhost:89' using an ApiKey of '#{api_key}'"
 end
 
 When /^I push (\d+) packages? to '(.*?)' using an ApiKey of '(.*?)'$/ do |n, source, key|
@@ -124,7 +128,7 @@ When /^I push (\d+) packages? to '(.*?)' using an ApiKey of '(.*?)'$/ do |n, sou
 end
 
 When /^I install a package locally$/ do
-	When "I install a package from 'http://localhost:5656/packages/' into '#{temp_packages_root}'"
+	When "I install a package from 'http://localhost:89/packages/' into '#{temp_packages_root}'"
 end
 
 When /^I install a package from '(.*?)' into '(.*?)'$/ do | src, dest | 
