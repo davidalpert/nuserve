@@ -7,6 +7,11 @@ using nuserve.Settings;
 
 namespace nuserve
 {
+    /// <summary>
+    /// Provides an implementation of the <see cref="ISelfHostingPackageServer"/>
+    /// that uses an OData service to list and serve packages and a Nancy app
+    /// that response to push/publish requests.
+    /// </summary>
     public class SelfHostingPackageServer : ISelfHostingPackageServer, IDisposable
     {
         private DataServiceHost serviceHost;
@@ -108,7 +113,7 @@ namespace nuserve
             var mgrUri = new Uri(settings.PackageManagerUri);
             host = new NancyHost(mgrUri);
             host.Start();
-            log.InfoFormat("Nancy now listening at: {0}", mgrUri);
+            log.InfoFormat("Nancy now responding to push requests at: {0}", mgrUri);
         }
 
         private void stop_Nancy_server()
