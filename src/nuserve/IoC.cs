@@ -26,7 +26,15 @@ namespace nuserve
                             });
                         });
 
-                        ObjectFactory.AssertConfigurationIsValid();
+                        try
+                        {
+                            ObjectFactory.AssertConfigurationIsValid();
+                        }
+                        catch (Exception ex)
+                        {
+                            //Console.WriteLine(ObjectFactory.WhatDoIHave());
+                            throw new InvalidOperationException("StructureMap has been passed an invalid configuration.", ex);
+                        }
 
                         initialized = true;
                     }
