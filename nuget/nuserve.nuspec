@@ -6,14 +6,14 @@
     <version>0.3.0</version>
     <authors>David Alpert</authors>
     <owners>David Alpert</owners>
-    <summary>NuServe - An IIS-less, Install-as-a-Windows-Service alternative to Nuget.Server</summary>
-    <description>NuServe - An IIS-less, Install-as-a-Windows-Service alternative to Nuget.Server
-| Please install with chocolatey (http://nuget.org/List/Packages/chocolatey).</description>
+    <summary>NuServe - A lightweight nuget server that can run as a windows service with no dependency on IIS.</summary>
+    <description>
+      NuServe - An IIS-less, Install-as-a-Windows-Service alternative to Nuget.Server
+      | Can install manually via nuget.exe or install with chocolatey (http://nuget.org/List/Packages/chocolatey).
+    </description>
     <projectUrl>https://github.com/davidalpert/nuserve</projectUrl>
     <tags>nuserve nuget server chocolatey</tags>
-    <!--<licenseUrl>YOUR LICENSE?</licenseUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <iconUrl>https://github.com/ferventcoder/nugetpackages/raw/master/nuserve/nuserve.gif</iconUrl>-->
+    <licenseUrl>http://www.apache.org/licenses/</licenseUrl>
     <dependencies>
       <dependency id="chocolatey" version="0.9.8.5" />
     </dependencies>
