@@ -4,6 +4,21 @@ using nuserve.Configuration;
 
 namespace nuserve
 {
+    /// <summary>
+    /// Provides a static gateway to initialize our IoC container.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This class simply kicks off StructureMap initialization, asking
+    /// the ObjectFactory to look for <see cref="Registry"/>'s in 
+    /// this assembly.
+    /// </para>
+    /// <para>
+    /// Primary dependencies for nuserve are configured in the
+    /// <see cref="NuserveRegistry"/> with FubuCore dependencies
+    /// configured in the <see cref="AppSettingProviderRegistry"/>.
+    /// </para>
+    /// </remarks>
     public class IoC
     {
         static bool initialized;
