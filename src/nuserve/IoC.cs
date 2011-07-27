@@ -21,7 +21,7 @@ namespace nuserve
                         {
                             x.Scan(a =>
                             {
-                                a.AssemblyContainingType<NugetServerRegistry>();
+                                a.AssemblyContainingType<NuserveRegistry>();
                                 a.LookForRegistries();
                             });
                         });
