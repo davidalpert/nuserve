@@ -1,8 +1,26 @@
 param($installPath, $toolsPath, $package, $project)
 
 Write-Host 'This is not a package with dlls to reference in it.'
-Write-Host 'Please install using chocolatey' 
-Write-Host "To get chocolatey just run 'Install-Package chocolatey' followed by 'Initialize-Chocolatey'"
-Write-Host 'chocolatey install nuserve'
-write-host 'Removing this package...'
+Write-Host 'Please install manually using nuget.exe into the folder'
+Write-Host 'where you want to run the server or try an automated'
+Write-Host 'install and setup using chocolatey.' 
+Write-Host ''
+Write-Host 'a) To install manually, open a command window to the'
+Write-Host '   folder where you want to install nuserve and run:'
+Write-Host ''
+Write-Host '      nuget.exe install nuserve'
+Write-Host ''
+Write-Host 'then, inside the nuserve package folder, customize'
+Write-Host "'nuserve.exe.config' then run:"
+Write-Host ''
+Write-Host '      nuserve.exe install'
+Write-Host '      nuserve.exe start'
+Write-Host ''
+Write-Host 'b) To install via powershell & chocolatey run'
+Write-Host ''
+Write-Host '      Install-Package chocolatey'
+Write-Host '      Initialize-Chocolatey'
+Write-Host '      chocolatey install nuserve'
+Write-Host ''
+write-host 'Now removing this package...'
 uninstall-package nuserve -ProjectName $project.Name
