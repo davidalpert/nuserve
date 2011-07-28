@@ -11,8 +11,7 @@ namespace nuserve
         {
             IoC.Bootstrap();
 
-            XmlConfigurator.ConfigureAndWatch(
-                    new FileInfo(".\\log4net.config"));
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"log4net.config")));
 
             Topshelf.HostFactory.Run(x =>
             {
