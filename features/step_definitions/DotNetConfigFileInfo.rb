@@ -28,7 +28,7 @@ class DotNetConfigFileInfo
 		ensure_appSettings_node
 	end
 
-	def save(file_path = nil)
+	def save!(file_path = nil)
 		file_path = @file_path if file_path.nil?
 		raise "cannot save to a null file_path" if file_path.nil?
 
@@ -44,7 +44,7 @@ class DotNetConfigFileInfo
 
 	def add_appSetting!(key, val)
 		add_appSetting(key, val)
-		save
+		save!
 	end
 
 	def set_unique_appSetting(key, val)
@@ -55,7 +55,7 @@ class DotNetConfigFileInfo
 
 	def set_unique_appSetting!(key, val)
 		set_unique_appSetting(key,val)
-		save
+		save!
 	end
 
 	def get_appSetting(key)
@@ -71,7 +71,7 @@ class DotNetConfigFileInfo
 
 	def remove_appSetting!(key)
 		remove_appSetting(key)
-		save
+		save!
 	end
 
 	private 

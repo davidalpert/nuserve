@@ -196,6 +196,6 @@ After do
 	@keys.each do |key|
 		config.remove_appSetting(key)
 	end
-	config.save
+	config.save!
 end
 
