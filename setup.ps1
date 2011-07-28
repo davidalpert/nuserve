@@ -1,5 +1,5 @@
 ### install chocolatey ###
-$url = "http://packages.nuget.org/v1/Package/Download/Chocolatey/0.9.8.4"
+$url = "http://packages.nuget.org/v1/Package/Download/Chocolatey/0.9.8.6"
 $tempDir = "$env:TEMP\chocolatey\chocInstall"
 if (![System.IO.Directory]::Exists($tempDir)) {[System.IO.Directory]::CreateDirectory($tempDir)}
 $file = Join-Path $tempDir "chocolatey.zip"
@@ -28,7 +28,6 @@ cup chocolatey
 
 # install nuget and ruby if they are missing
 cinstm nuget.commandline
-cinstm ruby
 cinstm ruby.devkit
 
 #perform ruby updates and get gems
