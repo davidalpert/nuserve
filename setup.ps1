@@ -29,6 +29,7 @@ cup chocolatey
 # install nuget and ruby if they are missing
 cinstm nuget.commandline
 cinstm ruby
+cinstm ruby.devkit
 
 #perform ruby updates and get gems
 gem update --system
