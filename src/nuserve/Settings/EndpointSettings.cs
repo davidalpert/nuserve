@@ -9,8 +9,8 @@ namespace nuserve.Settings
         /// </summary>
         public EndpointSettings()
         {
-            PackageListUri = "http://localhost:5656/packages";
-            PackageManagerUri = "http://localhost:5656/";
+            PackageListUri = "http://localhost:8080/packages";
+            PackageManagerUri = "http://localhost:8080/";
         }
 
         public string PackageListUri { get; set; }

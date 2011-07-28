@@ -99,7 +99,7 @@ Given /^there are (\d+) packages in the server's folder$/ do | n |
 end
 
 When /^I request a list of packages$/ do
-	When "I request a list of packages from 'http://localhost:89/packages'"
+	When "I request a list of packages from 'http://localhost:8080/packages'"
 end
 
 When /^I request a list of packages from '(.*?)'$/ do | source |
@@ -110,7 +110,7 @@ When /^I request a list of packages from '(.*?)'$/ do | source |
 end
 
 When /^I push (\d+) package(s)?$/ do | n, plural |
-	When "I push #{n} package#{plural} to 'http://localhost:89' using an ApiKey of '#{api_key}'"
+	When "I push #{n} package#{plural} to 'http://localhost:8080' using an ApiKey of '#{api_key}'"
 end
 
 When /^I push (\d+) packages? to '(.*?)' using an ApiKey of '(.*?)'$/ do |n, source, key|
@@ -128,7 +128,7 @@ When /^I push (\d+) packages? to '(.*?)' using an ApiKey of '(.*?)'$/ do |n, sou
 end
 
 When /^I install a package locally$/ do
-	When "I install a package from 'http://localhost:89/packages/' into '#{temp_packages_root}'"
+	When "I install a package from 'http://localhost:8080/packages/' into '#{temp_packages_root}'"
 end
 
 When /^I install a package from '(.*?)' into '(.*?)'$/ do | src, dest | 
