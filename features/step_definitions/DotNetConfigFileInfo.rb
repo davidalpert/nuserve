@@ -58,6 +58,13 @@ class DotNetConfigFileInfo
 		save
 	end
 
+	def get_appSetting(key)
+		#e.g. <add key="ApiSettings.ApiKey" value="nuget"/>
+		ensure_appSettings_node
+
+		@app_settings.elements["add[@key='#{key}']/@value"]
+	end
+
 	def remove_appSetting(key)
 		@app_settings.delete_element("add[@key='#{key}']")
 	end

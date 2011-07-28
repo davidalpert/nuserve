@@ -34,6 +34,11 @@ def update_config_set(key, val)
 	config.set_unique_appSetting!(key, val)
 end
 
+def get_config_setting(key)
+	config = DotNetConfigFileInfo.new($nuserve_exe_config)
+	config.get_appSetting(key)
+end
+
 Given /^nuserve is configured to manage packages at '(.+?)'$/ do |manage_packages_uri|
 	update_config_set('EndpointSettings.PackageManagerUri', manage_packages_uri)
 end
@@ -67,7 +72,11 @@ Given /^nuserve is running$/ do
 		sleep 1
 	end
 	puts "... assuming that nuserve has started\n\n"
+	listUri = get_config_setting('EndpointSettings.PackageListUri') || '(default)'
+	manageUri = get_config_setting('EndpointSettings.PackageManagerUri') || '(default)'
 	puts "[#{pipe.pid}] #{nuserve_exe}"
+	puts "listing on #{listUri}"
+	puts "managing on #{manageUri}\n\n"
 end
 
 Given /^nuserve is running with no ApiKey$/ do
