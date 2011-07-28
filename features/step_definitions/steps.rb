@@ -183,7 +183,19 @@ end
 
 After do
 	rm_rf $bin_packages_root
+
 	Process.kill( 'KILL', pipe.pid ) unless pipe.nil?
 	pipe.close unless pipe.nil?
+
+	@keys = Array['ApiSettings.ApiKey',
+                 'EndpointSettings.PackageManagerUri',
+			        'EndpointSettings.PackageListUri',
+			        'RepositorySettings.PathToServerPackageRepository']
+
+	config = DotNetConfigFileInfo.new($nuserve_exe_config)
+	@keys.each do |key|
+		config.remove_appSetting(key)
+	end
+	config.save
 end
 
