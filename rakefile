@@ -265,7 +265,8 @@ namespace :test do
 	end
 
 	Cucumber::Rake::Task.new(:run_features) do |task|
-		task.cucumber_opts = ['features', '-t', "@#{ENV["TAG"] || "all" }"]
+		task.cucumber_opts = ['features']
+    task.cucumber_opts << ['-t', "@#{ENV["TAG"]}"] if ENV["TAG"]
 	end
 
 	Cucumber::Rake::Task.new(:run_wip_features) do |task|
