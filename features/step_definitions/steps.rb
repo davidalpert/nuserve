@@ -72,11 +72,15 @@ Given /^nuserve is running$/ do
 		sleep 1
 	end
 	puts "... assuming that nuserve has started\n\n"
-	listUri = get_config_setting('EndpointSettings.PackageListUri') || '(default)'
-	manageUri = get_config_setting('EndpointSettings.PackageManagerUri') || '(default)'
+
+	list_uri = get_config_setting('EndpointSettings.PackageListUri') || '(default)'
+	manage_uri = get_config_setting('EndpointSettings.PackageManagerUri') || '(default)'
+	api_key = get_config_setting('ApiSettings.ApiKey') || '(default)'
+	local_package_root = get_config_setting('RepositorySettings.PathToServerPacakgeRepository') || '(default)'
+
 	puts "[#{pipe.pid}] #{nuserve_exe}"
-	puts "listing on #{listUri}"
-	puts "managing on #{manageUri}\n\n"
+	puts "listing on #{list_uri} and serving packages from #{local_package_root}\n\n"
+	puts "managing on #{manage_uri} with an apikey of #{api_key}\n\n"
 end
 
 Given /^nuserve is running with no ApiKey$/ do
