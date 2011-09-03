@@ -38,9 +38,8 @@ c:\NuGet\lib\ with batch files in c:\NuGet\bin pointing to the individual pacakg
   * 7zip.commandline 
   * ruby
   * ruby.devkit
-  * rubygems
-  * bundler
-1. run the default rake task which will
+1. Install rubygems and the bundler gem
+1. Run the default rake task which will
   1. download nuserve's nuget library dependencies
   1. build the source
   1. run the unit tests
@@ -53,10 +52,11 @@ Once this setup script is complete, you can copy the entire contents of the {pro
 of your choice, customize the appSettings in nuserve.exe.config and you're all set!  Run nuserve.exe in the console or run 'nuserve install' to install it as a windows service.
 
 If you are content to run nuserve from the build folder, the rakefile contains the following tasks to help you:
-* rake install
-* rake start
-* rake stop
-* rake uninstall
+
+- rake install
+- rake start
+- rake stop
+- rake uninstall
 
 Just remember that the next time you build nuserve from source any packages stored in that build folder will be removed.
 
