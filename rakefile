@@ -206,7 +206,7 @@ task :integration => ["clean", "build:all", "test:integration"]
 
 desc "Run acceptance tests (scripted features)"
 task :features, [:tag] do |t, args|
-	Rake::Task["test:features"].invoke(args.tag)
+	Rake::Task["test:features"].invoke(nil,args.tag)
 end  
 
 namespace :test do
@@ -265,7 +265,7 @@ namespace :test do
 	end
 
 	Cucumber::Rake::Task.new(:run_features) do |task|
-		task.cucumber_opts = ['features']
+		task.cucumber_opts = ['features', '-t', "@#{ENV["TAG"] || "all" }"]
 	end
 
 	Cucumber::Rake::Task.new(:run_wip_features) do |task|
