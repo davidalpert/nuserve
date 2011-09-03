@@ -10,11 +10,4 @@ gem update --system
 gem install rake
 gem install bundler
 
-#restore the nuget packages
-$nugetConfigs = Get-ChildItem '.\' -Recurse | ?{$_.name -match "packages\.config"} | select
-foreach ($nugetConfig in $nugetConfigs) {
-  Write-Host "restoring packages from $($nugetConfig.FullName)"
-  nuget install $($nugetConfig.FullName) /OutputDirectory packages
-}
-
 rake
