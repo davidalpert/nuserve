@@ -1,7 +1,6 @@
 @push
 Feature: Pushing a package to the server and optionally publishing it
 
-	@wip @broken1
 	Scenario: Push a new package to the server (and publish it)
 		Given nuserve is running with an ApiKey
 		  And there are 0 packages in the server's folder
@@ -9,7 +8,6 @@ Feature: Pushing a package to the server and optionally publishing it
 		  And I request a list of packages
 		 Then I should see 1 package
 
-	@wip @broken2
 	Scenario: Push a new package without any ApiKey
 		Given nuserve is running with no ApiKey
 		  And there are 0 packages in the server's folder
@@ -17,7 +15,6 @@ Feature: Pushing a package to the server and optionally publishing it
 		  And I request a list of packages
 		 Then I should see 0 package
 
-	@wip @broken3
 	Scenario: Push a new package with an empty ApiKey
 		Given nuserve is running with an ApiKey of ''
 		  And there are 0 packages in the server's folder
@@ -25,7 +22,6 @@ Feature: Pushing a package to the server and optionally publishing it
 		  And I request a list of packages
 		 Then I should see 0 package
 
-	@wip @broken4
 	Scenario: Push a new package with an empty ApiKey
 		Given nuserve is configured to list packages at 'http://localhost:8081/packages'
 		  And nuserve is configured to manage packages at 'http://localhost:8081/' 
