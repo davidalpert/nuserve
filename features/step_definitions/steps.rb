@@ -11,7 +11,7 @@ def package_tool(package, tool)
 	File.join(Dir.glob(File.join("./packages","#{package}.*")).sort.last, "tools", tool)
 end
 
-nuserve_startup_timeout_in_seconds = 3
+nuserve_startup_timeout_in_seconds = 5
 api_key = 'secretKey'
 project_root = '.'
 project_packages_root = File.join(project_root, 'packages')
