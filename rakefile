@@ -30,7 +30,7 @@ nuserve_exe      = "#{build_root}/nuserve.exe"
 
 solution_file    = FileList["./**/*.sln"].first
 commit           = Git.open(".").log.first.sha[0..10] rescue 'na'
-version          = "0.3.0"
+version          = "1.4.0"
 assembly_info    = File.join(source_root, 'nuserve', 'Properties', 'AssemblyInfo.cs')
 msbuild_exe      = File.join(ENV['windir'], 'Microsoft.NET','Framework',  'v4.0.30319', 'MSBuild.exe')
 
