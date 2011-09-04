@@ -31,7 +31,7 @@ nuserve_exe      = "#{build_root}/nuserve.exe"
 solution_file    = FileList["./**/*.sln"].first
 commit           = Git.open(".").log.first.sha[0..10] rescue 'na'
 version          = "1.4.0"
-assembly_info    = File.join(source_root, 'nuserve', 'Properties', 'AssemblyInfo.cs')
+assembly_info    = File.join(source_root, 'CommonAssemblyInfo.cs')
 msbuild_exe      = File.join(ENV['windir'], 'Microsoft.NET','Framework',  'v4.0.30319', 'MSBuild.exe')
 
 nuserve_zip      = "nuserve-#{version}-#{commit}.zip"
@@ -142,7 +142,7 @@ assemblyinfo :assemblyinfo do |asm|
 	asm.product_name = "nuserve - #{commit}"
 	asm.title = "nuserve"
 	asm.description = "Hosts the nuget.server functionality as a self-hosted process outside of IIS."
-	asm.copyright = "copyright some year, by some legal entity"
+	asm.copyright = ""
 	asm.output_file = assembly_info
 end
 
@@ -153,7 +153,7 @@ task :build => ["build:all"]
 
 namespace :build do
 
-	msbuild :all, [:config] => [:setup] do |msb, args|
+	msbuild :all, [:config] => [:setup, :assemblyinfo] do |msb, args|
 		configuration = :Debug
 
 		if args[:config] != nil && args[:config] != 'local' then

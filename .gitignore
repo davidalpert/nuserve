@@ -38,6 +38,7 @@ _ReSharper*/
 #Project files
 [Bb]uild/
 [Tt]emp
+[Cc]ommon[Aa]ssembly[Ii]nfo.cs
 
 #Subversion files
 .svn
