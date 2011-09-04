@@ -23,6 +23,11 @@ temp_packages_root = './temp_packages'
 nuget_exe = package_tool('NuGet.CommandLine', 'nuget.exe')
 project_nupkg_files = Dir.glob("#{project_packages_root}/**/*.nupkg")
 
+key_package_manager_uri = 'EndpointSettings.PackageManagerUri'
+key_package_list_uri = 'EndpointSettings.PackageListUri'
+key_path_to_packages = 'RepositorySettings.PathToServerPackageRepository'
+key_api_key = 'ApiSettings.ApiKey'
+
 pipe = :nil
 result = :nil
 
@@ -40,19 +45,19 @@ def get_config_setting(key)
 end
 
 Given /^nuserve is configured to manage packages at '(.+?)'$/ do |manage_packages_uri|
-	update_config_set('EndpointSettings.PackageManagerUri', manage_packages_uri)
+	update_config_set(key_package_manager_uri, manage_packages_uri)
 end
 
 Given /^nuserve is configured to list packages at '(.+?)'$/ do |list_packages_uri|
-	update_config_set('EndpointSettings.PackageListUri', list_packages_uri)
+	update_config_set(key_package_list_uri, list_packages_uri)
 end
 
 Given /^nuserve is configured to serve packages from '(.*?)'$/ do | pathToRepo |
-	update_config_set('RepositorySettings.PathToServerPackageRepository', pathToRepo)
+	update_config_set(key_path_to_packages, pathToRepo)
 end
 
 Given /^nuserve is configured to use '(.*?)' as an ApiKey$/ do | key |
-	update_config_set('ApiSettings.ApiKey', key)
+	update_config_set(key_api_key, key)
 end
 
 Given /^nuserve is running with an ApiKey$/ do
@@ -73,10 +78,10 @@ Given /^nuserve is running$/ do
 	end
 	puts "... assuming that nuserve has started\n\n"
 
-	list_uri = get_config_setting('EndpointSettings.PackageListUri') || '(default)'
-	manage_uri = get_config_setting('EndpointSettings.PackageManagerUri') || '(default)'
-	api_key = get_config_setting('ApiSettings.ApiKey') || '(default)'
-	local_package_root = get_config_setting('RepositorySettings.PathToServerPacakgeRepository') || '(default)'
+	list_uri = get_config_setting(key_package_list_uri) || '(default)'
+	manage_uri = get_config_setting(key_package_manager_uri) || '(default)'
+	api_key = get_config_setting(key_api_key) || '(default)'
+	local_package_root = get_config_setting(key_path_to_packages) || '(default)'
 
 	puts "[#{pipe.pid}] #{nuserve_exe}"
 	puts "listing on #{list_uri} and serving packages from #{local_package_root}\n\n"
@@ -88,7 +93,7 @@ Given /^nuserve is running with no ApiKey$/ do
 	puts "updating #{$nuserve_exe_config} to use no ApiKey"
 
 	config = DotNetConfigFileInfo.new($nuserve_exe_config)
-	config.remove_appSetting!('ApiSettings.ApiKey')
+	config.remove_appSetting!(key_api_key)
 
 	Given 'nuserve is running'
 end
@@ -191,10 +196,10 @@ After do
 	Process.kill( 'KILL', pipe.pid ) unless pipe.nil?
 	pipe.close unless pipe.nil?
 
-	@keys = Array['ApiSettings.ApiKey',
-                 'EndpointSettings.PackageManagerUri',
-			        'EndpointSettings.PackageListUri',
-			        'RepositorySettings.PathToServerPackageRepository']
+	@keys = Array[key_api_key,
+                key_package_manager_uri,
+			          key_package_list_uri,
+			          key_path_to_packages]
 
 	config = DotNetConfigFileInfo.new($nuserve_exe_config)
 	@keys.each do |key|
