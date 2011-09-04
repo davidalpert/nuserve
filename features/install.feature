@@ -1,3 +1,4 @@
+@install
 Feature: Pulling a package from the server to install locally
 
 	Scenario: Install a package that exists on the server

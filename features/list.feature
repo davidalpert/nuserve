@@ -1,3 +1,4 @@
+@list
 Feature: Display a list of packages from the server
 
 	Scenario: List packages when there are no packages available
