@@ -132,7 +132,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Settings\ApiSettings.cs" />
     <Compile Include="Settings\EndpointSettings.cs" />
-    <Compile Include="Settings\RepositorySettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Packages\_deleteme.placeholder.txt" />

@@ -25,7 +25,7 @@ project_nupkg_files = Dir.glob("#{project_packages_root}/**/*.nupkg")
 
 key_package_manager_uri = 'EndpointSettings.PackageManagerUri'
 key_package_list_uri = 'EndpointSettings.PackageListUri'
-key_path_to_packages = 'RepositorySettings.PathToServerPackageRepository'
+key_path_to_packages = 'packagesPath'
 key_api_key = 'ApiSettings.ApiKey'
 
 pipe = :nil
