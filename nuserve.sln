@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scripts", "{B0CD4D9F-3358-42B0-BD39-0B5585BE243D}"
 	ProjectSection(SolutionItems) = preProject
 		gemfile = gemfile
@@ -29,6 +29,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{A3A4E4C9
 	ProjectSection(SolutionItems) = preProject
 		nuget\tools\chocolateyInstall.ps1 = nuget\tools\chocolateyInstall.ps1
 		nuget\tools\install.ps1 = nuget\tools\install.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{721AE2FF-C7FE-44FB-9317-E351F61F4097}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Global
