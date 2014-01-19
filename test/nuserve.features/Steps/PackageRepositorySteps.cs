@@ -3,27 +3,18 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-using System.Reflection;
-using NuServe.TestHelpers;
 using TechTalk.SpecFlow;
 
 namespace nuserve.features.Steps
 {
     [Binding]
-    public class PackageRepositorySteps
+    public class PackageRepositorySteps 
     {
-        public PackageRepositorySteps()
-        {
-            TestContext = new NuServeTestContext(Assembly.GetExecutingAssembly());
-        }
-
-        public NuServeTestContext TestContext { get; set; }
-
         [Given(@"there are (.*) packages in the server's folder")]
         public void GivenThereArePackagesInTheServerSFolder(int n)
         {
-            var packageRoot = TestContext.PackagesRoot;
-            var testPackages = TestContext.TestPackages;
+            var packageRoot = GlobalSteps.TestContext.PackagesRoot;
+            var testPackages = GlobalSteps.TestContext.TestPackages;
 
             int packagesToTake = Math.Max(0, Math.Min(n, testPackages.Length));
 

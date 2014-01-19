@@ -61,5 +61,10 @@ namespace NuServe.TestHelpers
 
             return null;
         }
+
+        public void Cleanup()
+        {
+            // TODO
+        }
     }
 }
