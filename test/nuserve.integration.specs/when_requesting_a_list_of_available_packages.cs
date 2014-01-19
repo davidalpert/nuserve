@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Machine.Specifications;
+using nuserve.integration.specs.TestHelpers;
 
 namespace nuserve.integration.specs
 {
@@ -14,7 +15,7 @@ namespace nuserve.integration.specs
         {
             StartNuServeOn("http://localhost:5051/packages", "http://localhost:5051/");
 
-            listCommand = BuildListCommandFor("http://localhost:5051/packages");
+            listCommand = NuGetCommandBuilder.BuildListCommandFor("http://localhost:5051/packages");
         };
 
         Because of = () => packages = listCommand.GetPackages();

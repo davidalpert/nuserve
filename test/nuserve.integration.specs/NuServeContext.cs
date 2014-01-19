@@ -1,67 +1,50 @@
 using System;
 using System.Collections.Generic;
-using log4net;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using Machine.Specifications;
-using NSubstitute;
-using NuGet.Commands;
-using NuGet.Common;
-using nuserve.Infrastructure;
-using nuserve.Infrastructure.Implementation;
-using nuserve.Settings;
+using nuserve.integration.specs.TestHelpers;
 
 namespace nuserve.integration.specs
 {
     public abstract class NuServeContext
     {
-        protected static ISelfHostingPackageServer server;
-        static EndpointSettings endpointSettings;
+        protected static NuServeRunner _runner;
 
-        Cleanup after_each = () =>
-        {
-            StopNuServe();
-        };
+        Establish context = () => _runner = new NuServeRunner();
+
+        Cleanup after_each = () => _runner.StopNuServe();
 
         protected static void StartNuServeOn(string packageListUri, string packagePushUri)
         {
-            StopNuServe();
-
-            endpointSettings = new EndpointSettings()
-            {
-                PackageListUri = packageListUri,
-                PackageManagerUri = packagePushUri
-            };
-            var log = Substitute.For<ILog>();
-            server = new SelfHostingPackageServer(endpointSettings, log);
-
-            server.Start();
+            _runner.StartNuServeOn(packageListUri, packagePushUri);
         }
 
-        protected static void StopNuServe()
+        public static void PushPackage(string nupkgName, string apiKey, string source)
         {
-            if (server != null)
-            {
-                server.Stop();
-            }
-        }
+            var pathToAssembly = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var pathToNugetExe = Path.Combine(pathToAssembly, "Tools", "nuget.exe");
+            var pathToTestPackage = Path.Combine(pathToAssembly, "TestPackages", nupkgName);
 
-        protected static NuGet.Commands.ListCommand BuildListCommandFor(string source)
-        {
-            NuGet.IPackageSourceProvider sourceProvider = Substitute.For<NuGet.IPackageSourceProvider>();
-            sourceProvider.LoadPackageSources().Returns(call => new List<NuGet.PackageSource> { new NuGet.PackageSource(source) });
-            NuGet.IPackageRepositoryFactory packageRepositoryFactory = new NuGet.PackageRepositoryFactory();
-            return new ListCommand(packageRepositoryFactory, sourceProvider);
-        }
+            File.Exists(pathToNugetExe).ShouldBeTrue();
+            File.Exists(pathToTestPackage).ShouldBeTrue();
 
-        protected static NuGet.Commands.PublishCommand BuildPublishCommandFor(string source)
-        {
-            NuGet.IPackageSourceProvider sourceProvider = Substitute.For<NuGet.IPackageSourceProvider>();
-            sourceProvider.LoadPackageSources().Returns(call => new List<NuGet.PackageSource> { new NuGet.PackageSource(source) });
+            // nuget push <package path> [API key] [options]
+            Process myProcess = new Process
+                {
+                    StartInfo =
+                        {
+                            FileName = pathToNugetExe,
+                            CreateNoWindow = true,
+                            Arguments = String.Format("push {0} {1} -s {2}", pathToTestPackage, apiKey, source)
+                        }
+                };
 
-            var cmd = new PublishCommand(sourceProvider);
-            cmd.Console = Substitute.For<IConsole>();
-            cmd.Source = source;
+            myProcess.Start().ShouldBeTrue();
 
-            return cmd;
+            myProcess.WaitForExit(10000).ShouldBeTrue();
         }
     }
 }

@@ -8,6 +8,6 @@ namespace nuserve.integration.specs
         Because of = () => StartNuServeOn("http://localhost:5051/packages", "http://localhost:5051/");
 
         It should_be_listening = () =>
-            server.IsListening.ShouldBeTrue();
+            _runner.Server.IsListening.ShouldBeTrue();
     }
 }
