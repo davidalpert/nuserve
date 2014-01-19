@@ -4,7 +4,7 @@ using NSubstitute;
 using NuGet;
 using NuGet.Commands;
 
-namespace nuserve.integration.specs.TestHelpers
+namespace NuServe.TestHelpers
 {
     public static class NuGetCommandBuilder
     {

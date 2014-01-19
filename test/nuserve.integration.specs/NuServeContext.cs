@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Machine.Specifications;
-using nuserve.integration.specs.TestHelpers;
+using NuServe.TestHelpers;
 
 namespace nuserve.integration.specs
 {

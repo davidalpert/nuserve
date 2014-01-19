@@ -6,7 +6,7 @@ using System.Text;
 using NuGet;
 using NuGet.Common;
 
-namespace nuserve.integration.specs.TestHelpers
+namespace NuServe.TestHelpers
 {
     public class InMemoryConsole : IConsole
     {
@@ -20,7 +20,7 @@ namespace nuserve.integration.specs.TestHelpers
 
         public void Log(MessageLevel level, string message, params object[] args)
         {
-            Write(level + string.Format(message, args));
+            Write((string) (level + string.Format(message, args)));
             WriteLine();
         }
 

@@ -79,15 +79,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\nuserve.integration.specs\TestHelpers\InMemoryConsole.cs">
-      <Link>TestHelpers\InMemoryConsole.cs</Link>
-    </Compile>
-    <Compile Include="..\nuserve.integration.specs\TestHelpers\NuGetCommandBuilder.cs">
-      <Link>TestHelpers\NuGetCommandBuilder.cs</Link>
-    </Compile>
-    <Compile Include="..\nuserve.integration.specs\TestHelpers\NuServeRunner.cs">
-      <Link>TestHelpers\NuServeRunner.cs</Link>
-    </Compile>
     <Compile Include="install.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -105,12 +96,18 @@
       <DependentUpon>push.feature</DependentUpon>
     </Compile>
     <Compile Include="SpecFlowNUnitExtension.cs" />
-    <Compile Include="Steps\Class2.cs" />
+    <Compile Include="Steps\NuGetSteps.cs" />
+    <Compile Include="Steps\NuServeSteps.cs" />
+    <Compile Include="Steps\PackageRepositorySteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\nuserve\nuserve.csproj">
       <Project>{F5AF94E8-B767-40C0-AFB3-F87170EFBE1C}</Project>
       <Name>nuserve</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NuServe.TestHelpers\NuServe.TestHelpers.csproj">
+      <Project>{926468F7-725C-4F1C-8797-A67C0FD392F0}</Project>
+      <Name>NuServe.TestHelpers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

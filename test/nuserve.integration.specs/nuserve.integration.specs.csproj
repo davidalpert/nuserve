@@ -90,10 +90,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TestHelpers\InMemoryConsole.cs" />
-    <Compile Include="TestHelpers\NuGetCommandBuilder.cs" />
     <Compile Include="NuServeContext.cs" />
-    <Compile Include="TestHelpers\NuServeRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="when_publishing_a_package_to_the_default_packages_folder.cs">
       <DependentUpon>NuServeContext.cs</DependentUpon>
@@ -134,8 +131,14 @@
       <Project>{F5AF94E8-B767-40C0-AFB3-F87170EFBE1C}</Project>
       <Name>nuserve</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NuServe.TestHelpers\NuServe.TestHelpers.csproj">
+      <Project>{926468F7-725C-4F1C-8797-A67C0FD392F0}</Project>
+      <Name>NuServe.TestHelpers</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="TestHelpers\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\packages\NuGet.CommandLine.1.4.20615.182\tools\NuGet.exe">
       <Link>Tools\NuGet.exe</Link>

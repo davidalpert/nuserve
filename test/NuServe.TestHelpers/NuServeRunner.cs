@@ -6,7 +6,7 @@ using nuserve.Infrastructure;
 using nuserve.Infrastructure.Implementation;
 using nuserve.Settings;
 
-namespace nuserve.integration.specs.TestHelpers
+namespace NuServe.TestHelpers
 {
     public class NuServeRunner
     {

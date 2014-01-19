@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Machine.Specifications;
-using nuserve.integration.specs.TestHelpers;
 
 namespace nuserve.integration.specs
 {
